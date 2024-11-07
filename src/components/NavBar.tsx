@@ -21,6 +21,7 @@ export default function NavBar() {
 }
 
 const NavBarContainer = styled.div`
+  background-color: #eee;
   box-shadow: var(--basicShadow);
   position: sticky;
   top: 0;
