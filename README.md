@@ -34,3 +34,16 @@
 - `npm run dev`: 개발 서버 실행
 - `npm run build`: 프로덕션 빌드 생성
 - `npm run preview`: 프로덕션 빌드 실행
+
+## Branch 전략
+
+- main: 배포 브랜치
+- page: 페이지 개발 브랜치
+  - 페이지 개발 시 생성 (ex. page/main)
+  - 관련 작업시 해당 페이지 브렌치에서 작업.
+  - 개발 완료 후 main 브랜치로 병합
+
+## 컨벤션
+
+- 컴포넌트 명은 대문자로 시작하는 PascalCase로 작성
+- 파일 명은 소문자로 시작하는 camelCase로 작성
