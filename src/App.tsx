@@ -1,9 +1,9 @@
 import "./App.css";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
-import Main from "./components/Main";
-import TravelList from "./pages/TravelList";
+import Main from "./pages/Main.tsx";
+import TravelList from "./pages/TravelList.tsx";
 import NavBar from "./components/NavBar";
-import MyPage from "./components/MyPage";
+import MyPage from "./pages/MyPage.tsx";
 import TravelDetail from "./pages/TravelDetail";
 
 function App() {
