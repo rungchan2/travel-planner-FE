@@ -2,11 +2,11 @@ import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import styled from "styled-components";
 import {TextField} from "@mui/material";
-import {useTypedDispatch} from '../../hooks/redux.ts';
-import {setTitle, setLocation, setDateRange} from '../../store/plannerSlice.ts';
-import Container from "../Container.tsx";
-import DateRangeInput from "../FormFields/DateInput.tsx";
-import SubmitButton from "../FormFields/SubmitButton.tsx";
+import {useTypedDispatch} from '../hooks/redux.ts';
+import {setTitle, setLocation, setDateRange} from '../store/plannerSlice.ts';
+import Container from "../components/Container.tsx";
+import DateRangeInput from "../components/FormFields/DateInput.tsx";
+import SubmitButton from "../components/FormFields/SubmitButton.tsx";
 
 const MainPage: React.FC = () => {
   const [title, setTitleInput] = useState('');
