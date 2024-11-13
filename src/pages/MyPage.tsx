@@ -126,7 +126,7 @@ const NoPlanCard: React.FC = () => {
   );
 };
 
-const MyPlanPage: React.FC = () => {
+const MyPage: React.FC = () => {
   const [myPlanData, setPlanData] = useState<TravelPlan[]>(initialTravelPlans);
 
   // 삭제 함수 - 로컬 상태에서 여행 계획 삭제
@@ -194,4 +194,4 @@ const MyPlanPage: React.FC = () => {
     </div>
   );
 };
-export default MyPlanPage;
+export default MyPage;
