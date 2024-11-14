@@ -1,31 +1,33 @@
 import React from "react";
 import { styled } from "styled-components";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { ISchedule } from "../type";
+import { Draggable } from "react-beautiful-dnd";
 
 interface SingleScheduleProps {
   data: ISchedule;
+  index: number;
 }
 
-const SingleSchedule: React.FC<SingleScheduleProps> = ({ data }) => {
-  const timeRange = "09:00 ~ 14:00";
+const SingleSchedule: React.FC<SingleScheduleProps> = ({ data, index }) => {
 
   return (
-    <ScheduleContainer>
-      <TimeColumn>{timeRange}</TimeColumn>
-      <ContentColumn>
-        <ImageWrapper>
+    <Draggable draggableId={data.scheduleId} index={index}>
+      {(provided) => (
+        <ScheduleContainer ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+          <ContentColumn>
+            <ImageWrapper>
           <PlaceholderImage />
         </ImageWrapper>
         <InfoWrapper>
           <TagWrapper>
             <Tag>식당</Tag>
-            <MoreHorizIcon fontSize="small" />
           </TagWrapper>
           <Description>{data.description}</Description>
         </InfoWrapper>
-      </ContentColumn>
-    </ScheduleContainer>
+          </ContentColumn>
+        </ScheduleContainer>
+      )}
+    </Draggable>
   );
 };
 
@@ -39,13 +41,13 @@ const ScheduleContainer = styled.div`
   margin-bottom: 12px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   min-height: 96px;
-`;
 
-const TimeColumn = styled.div`
-  min-width: 90px;
-  font-size: 14px;
-  color: #666;
-  padding-top: 4px;
+  &:hover {
+    background: #f9fafb;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
 `;
 
 const ContentColumn = styled.div`
