@@ -1,10 +1,10 @@
 import "./App.css";
-import { Route, Routes, BrowserRouter } from "react-router-dom";
-import Main from "./pages/Main.tsx";
-import TravelList from "./pages/TravelList.tsx";
 import NavBar from "./components/NavBar";
+import Main from "./pages/Main.tsx";
 import MyPage from "./pages/MyPage.tsx";
 import TravelDetail from "./pages/TravelDetail";
+import TravelList from "./pages/TravelList.tsx";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
 
 function App() {
   return (

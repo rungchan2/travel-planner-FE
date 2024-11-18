@@ -1,7 +1,7 @@
+import { ISchedule } from "../type";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import React from "react";
 import { styled } from "styled-components";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import { ISchedule } from "../type";
 
 interface SingleScheduleProps {
   data: ISchedule;
