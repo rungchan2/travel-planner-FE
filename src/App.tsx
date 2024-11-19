@@ -8,17 +8,16 @@ import TravelDetail from "./pages/TravelDetail";
 
 function App() {
   return (
-      <BrowserRouter future={{ v7_startTransition: true }}>
-        <NavBar />
+    <BrowserRouter future={{ v7_startTransition: true }}>
+      <NavBar />
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/travel" element={<TravelList />} />
         <Route path="/travel/:id" element={<TravelDetail />} />
         <Route path="/mypage" element={<MyPage />} />
-        </Routes>
-      </BrowserRouter>
+      </Routes>
+    </BrowserRouter>
   );
 }
-
 
 export default App;
