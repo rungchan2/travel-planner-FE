@@ -23,11 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 
-# Vite 관련
-.vite/
-*.cache
-vite.config.ts
-
 # Tailwind CSS 관련
 tailwind.config.js
 tailwind.config.cjs
