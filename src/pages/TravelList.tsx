@@ -22,9 +22,9 @@ interface TripPlan {
   endDate: string;
   imagePath: string;
 }
+//테스트용 토근
 const BASE_URL = "https://project-tvimk.run.goorm.site";
-const AUTH_TOKEN =
-  "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6InVzZXIxIiwiZW1haWwiOiJ1c2VyMUBnbWFpbC5jb20iLCJpYXQiOjE3MzIwMTg2OTksImV4cCI6MTczMjQ1MDY5OX0.5UPoaVW750iBgCEkqiSWLdfdDJwwNZXj_KwtAXhQAc4";
+const AUTH_TOKEN = "";
 axios.defaults.baseURL = "https://project-tvimk.run.goorm.site/";
 axios.defaults.headers.common["Authorization"] = AUTH_TOKEN;
 
