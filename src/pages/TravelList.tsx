@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardHeader,
@@ -7,49 +7,26 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
+import axios from "axios";
 import { PlusCircle, X } from "lucide-react";
 import React from "react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-interface TravelPlan {
+interface TripPlan {
   id: string;
+  userId: number;
   name: string;
+  description: string;
   startDate: string;
   endDate: string;
-  description: string;
+  imagePath: string;
 }
-
-const initialTravelPlans: TravelPlan[] = [
-  {
-    id: "1",
-    name: "도쿄 여행",
-    startDate: "2023-09-15",
-    endDate: "2023-09-22",
-    description: "일본의 수도 도쿄를 탐험",
-  },
-  {
-    id: "2",
-    name: "제주도 한라산 등반 여행",
-    startDate: "2024-12-20",
-    endDate: "2024-12-25",
-    description: "제주도의 아름다운 자연을 즐기는 5일간의 휴식",
-  },
-  {
-    id: "3",
-    name: "파리 로맨틱 여행",
-    startDate: "2024-11-20",
-    endDate: "2024-11-27",
-    description: "프랑스의 낭만적인 수도 파리를 둘러보는 7일간의 여행",
-  },
-  {
-    id: "4",
-    name: "한국 경주 여행",
-    startDate: "2024-11-14",
-    endDate: "2024-11-20",
-    description: "한국 경주 여행",
-  },
-];
+const BASE_URL = "https://project-tvimk.run.goorm.site";
+const AUTH_TOKEN =
+  "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6InVzZXIxIiwiZW1haWwiOiJ1c2VyMUBnbWFpbC5jb20iLCJpYXQiOjE3MzIwMTg2OTksImV4cCI6MTczMjQ1MDY5OX0.5UPoaVW750iBgCEkqiSWLdfdDJwwNZXj_KwtAXhQAc4";
+axios.defaults.baseURL = "https://project-tvimk.run.goorm.site/";
+axios.defaults.headers.common["Authorization"] = AUTH_TOKEN;
 
 const calculateDaysLeft = (startDate: string): number => {
   const today = new Date();
@@ -72,13 +49,19 @@ const getDaysLeftColor = (daysLeft: number): string => {
 };
 
 const TravelPlanCard: React.FC<{
-  plan: TravelPlan;
+  plan: TripPlan;
   onDelete: (id: string) => void;
 }> = ({ plan, onDelete }) => {
   const daysLeft = calculateDaysLeft(plan.startDate);
   const daysLeftText = getDaysLeftText(daysLeft);
   return (
-    <Link to={`/travel/${plan.id}`} className="block">
+    <Link
+      to={`/travel/${plan.id}`}
+      state={{
+        plan: plan,
+      }}
+      className="block"
+    >
       <Card className="w-full relative hover:shadow-lg transition-shadow">
         <div className="absolute top-2 right-2 z-10">
           <button
@@ -127,41 +110,12 @@ const NoPlanCard: React.FC = () => {
 };
 
 const Travel: React.FC = () => {
-  const [myPlanData, setPlanData] = useState<TravelPlan[]>(initialTravelPlans);
-
-  // 삭제 함수 - 로컬 상태에서 여행 계획 삭제
-  const handleDelete = (id: string) => {
-    setPlanData((prevPlans) => prevPlans.filter((plan) => plan.id !== id));
-  };
-
-  const handleDeleteByDB = async (id: string) => {
-    try {
-      const response = await fetch(`/api/schedules/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (response.ok) {
-        setPlanData((prevPlans) => prevPlans.filter((plan) => plan.id !== id));
-      } else {
-        throw new Error("삭제 실패");
-      }
-    } catch (error) {
-      console.error("오류 발생:", error);
-    }
-  };
+  const [myTrip, setTrip] = useState<TripPlan[]>([]);
 
   const fetchTravelPlans = async () => {
     try {
-      const response = await fetch("/api/schedules/", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      response.json().then((data) => {
-        setPlanData(data);
+      axios.get("/api/trip").then((response) => {
+        setTrip(response.data);
       });
     } catch (error) {
       console.error("오류 발생:", error);
@@ -170,25 +124,43 @@ const Travel: React.FC = () => {
 
   useEffect(() => {
     fetchTravelPlans();
-  }, []); //
+  }, []);
 
-  const numberOfPlans = myPlanData.length;
+  const handleDeleteByDB = async (id: string) => {
+    try {
+      axios.delete(`/api/trip/${id}`).then((response) => {
+        if (response.status === 200) {
+          setTrip((prevPlans) => prevPlans.filter((plan) => plan.id !== id));
+        } else {
+          throw new Error("삭제 실패");
+        }
+      });
+    } catch (error) {
+      console.error("오류 발생:", error);
+    }
+  };
+
+  const numberOfPlans = myTrip.length;
 
   return (
     <div className="container mx-auto px-4 py-8">
       <p className="text-sm text-muted-foreground mb-2">총 {numberOfPlans}개</p>
       <div className="flex justify-between items-end mb-6">
         <h1 className="text-3xl font-bold">나의 여행 계획</h1>
-        <Button>
+        <Link to="/" className={buttonVariants()}>
           <PlusCircle className="mr-2 h-4 w-4" /> 새 여행 계획
-        </Button>
+        </Link>
       </div>
       <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-1">
         {numberOfPlans === 0 ? (
           <NoPlanCard />
         ) : (
-          myPlanData.map((plan) => (
-            <TravelPlanCard key={plan.id} plan={plan} onDelete={handleDelete} />
+          myTrip.map((plan) => (
+            <TravelPlanCard
+              key={plan.id}
+              plan={plan}
+              onDelete={handleDeleteByDB}
+            />
           ))
         )}
       </div>
