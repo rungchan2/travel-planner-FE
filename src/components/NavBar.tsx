@@ -14,7 +14,6 @@ export default function NavBar() {
         </IconContainer>
         <LinkContainer>
           <NavBarItem to="/travel">Travel</NavBarItem>
-          <NavBarItem to="/mypage">MyPage</NavBarItem>
           <LogoutButton onClick={signOut} ><Logout /></LogoutButton>
         </LinkContainer>
       </ModifiedContainer>

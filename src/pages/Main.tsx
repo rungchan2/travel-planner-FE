@@ -28,7 +28,7 @@ const MainPage: React.FC = () => {
 
     navigate('/travel');
   }
-  //
+  // 서버 연결 이후 활성화 예정
   //   try {
   //     const response = await axios.post('/api/travel-detail', {
   //       title,
@@ -48,7 +48,6 @@ const MainPage: React.FC = () => {
 
 
   return (
-    <Container>
       <Contents>
         <Typography component="h1">여행을 시작해보세요.</Typography>
         <InputArea>
@@ -95,7 +94,6 @@ const MainPage: React.FC = () => {
           여행 시작하기
         </SubmitButton>
       </Contents>
-    </Container>
   );
 };
 

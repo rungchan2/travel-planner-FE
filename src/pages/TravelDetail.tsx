@@ -20,7 +20,6 @@ export default function TravelDetail() {
   const dayCount = dayjs(scheduleData.endDate).diff(dayjs(scheduleData.startDate), 'day') + 1;
 
   return (
-    <Container>
       <TDContainer>
         <div className="left">
           <InfoCard>
@@ -45,7 +44,6 @@ export default function TravelDetail() {
           <p>지도영역</p>
         </div>
       </TDContainer>
-    </Container>
   );
 }
 
