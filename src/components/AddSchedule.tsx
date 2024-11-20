@@ -10,7 +10,7 @@ export default function AddSchedule() {
     }
   return (
     <ScheduleContainer onClick={handleClick}>
-        {isClicked ? <ScheduleForm/> : <p>+ 일정 추가</p>}
+        {isClicked ? <ScheduleForm setIsClicked={setIsClicked}/> : <p>+ 일정 추가</p>}
     </ScheduleContainer>
   )
 }

@@ -23,7 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 
-# Tailwind CSS 관련
-tailwind.config.js
-tailwind.config.cjs
-tailwind.config.ts
+# # Tailwind CSS 관련
+# tailwind.config.js
+# tailwind.config.cjs
+# tailwind.config.ts
