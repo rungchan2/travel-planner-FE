@@ -4,7 +4,9 @@ import styled from "styled-components";
 import { ITrip } from "../type";
 import SingleDay from "../components/SingleDay";
 import dayjs from "dayjs";
-import { DragDropContext } from "react-beautiful-dnd";
+import { DragDropContext, DropResult } from "react-beautiful-dnd";
+
+
 const scheduleData: ITrip = {
   tripId: "1",
   userId: "1",
@@ -19,10 +21,36 @@ export default function TravelDetail() {
   const dayCount =
     dayjs(scheduleData.endDate).diff(dayjs(scheduleData.startDate), "day") + 1;
 
-  const onDragEnd = (result: any) => {
-    const { destination, source, draggableId } = result;
+  const onDragEnd = (result: DropResult) => {
+    const { destination, source } = result;
+    
     if (!destination) return;
-    console.log(destination, source, draggableId);
+
+    const listOfSchedules : any = {};
+
+    // 같은 날짜 내에서의 이동
+    if (source.droppableId === destination.droppableId) {
+      const currentSchedules = [...listOfSchedules];
+      const daySchedules = currentSchedules.filter(
+        schedule => schedule.date === source.droppableId
+      );
+      
+      const [movedSchedule] = daySchedules.splice(source.index, 1);
+      daySchedules.splice(destination.index, 0, movedSchedule);
+      
+    } else {
+      // 다른 날짜로 이동
+      const currentSchedules = [...listOfSchedules];
+      const movedSchedule = currentSchedules.find(
+        schedule => 
+          schedule.date === source.droppableId && 
+          currentSchedules.indexOf(schedule) === source.index
+      );
+
+      if (movedSchedule) {
+        movedSchedule.date = destination.droppableId;
+      }
+    }
   };
 
   return (
