@@ -6,6 +6,9 @@ import { useState } from "react";
 import SingleSchedule from "./SingleSchedule";
 import dayjs from "dayjs";
 import "dayjs/locale/ko"; //한국어
+import AddSchedule from "./AddSchedule";
+import { Droppable } from "react-beautiful-dnd";
+
 dayjs.locale("ko");
 
 const listOfSchedules: ISchedule[] = [
@@ -37,19 +40,28 @@ const listOfSchedules: ISchedule[] = [
 
 export default function SingleDay({ date }: { date: string }) {
   const [isOpen, setIsOpen] = useState(false);
+
+  const filteredSchedules = listOfSchedules.filter(
+    (data) => data.date === date
+  );
   return (
-    <SingleDayContainer onClick={() => setIsOpen(!isOpen)}>
-      <div className="before">
-        {dayjs(date).format("YYYY-MM-DD (ddd)")}
-        {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-      </div>
-      <div className="after">
-        {isOpen &&
-          listOfSchedules.map((data, index) => (
-            <SingleSchedule key={index} data={data} />
-          ))}
-      </div>
-    </SingleDayContainer>
+    <Droppable droppableId={date}>
+      {(provided) => (
+        <SingleDayContainer ref={provided.innerRef} {...provided.droppableProps}>
+          <div className="before" onClick={() => setIsOpen(!isOpen)}>
+          {dayjs(date).format("YYYY-MM-DD (ddd)")}
+            {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+          </div>
+          <div className="after">
+            {isOpen &&
+            filteredSchedules.map((data, index) => (
+              <SingleSchedule key={index} data={data} index={index} />
+            ))}
+        </div>
+        {isOpen ? <AddSchedule /> : null}
+        </SingleDayContainer>
+      )}
+    </Droppable>
   );
 }
 

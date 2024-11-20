@@ -25,7 +25,6 @@ const MainPage: React.FC = () => {
     if (!title || !location || !startDate || !endDate) {
       return;
     }
-
     navigate('/travel');
   }
   // 서버 연결 이후 활성화 예정
