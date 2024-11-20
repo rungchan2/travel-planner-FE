@@ -1,4 +1,3 @@
-import React from 'react';
 import {signInWithGoogle} from './auth';
 import {Modal, Box, Button, Typography} from '@mui/material';
 import {Google} from "@mui/icons-material";

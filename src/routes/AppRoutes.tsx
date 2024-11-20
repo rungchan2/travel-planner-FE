@@ -8,6 +8,7 @@ import MyPage from "../pages/MyPage.tsx";
 import TravelDetail from "../pages/TravelDetail";
 import CircularIndeterminate from "@/components/LoadingIcon.tsx";
 import Container from "@/components/Container.tsx";
+import NotFoundPage from "@/pages/NotFoundPage.tsx";
 
 const AppRoutes: React.FC = () => {
   const {user, loading} = useContext(AuthContext);
@@ -36,6 +37,9 @@ const AppRoutes: React.FC = () => {
         <Route path="/travel" element={<TravelList/>}/>
         <Route path="/travel/:id" element={<TravelDetail/>}/>
         <Route path="/mypage" element={<MyPage/>}/>
+
+        {/*404 페이지*/}
+        <Route path="*" element={<NotFoundPage/>}/>
       </Routes>
     </Container>
   );

@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
+// import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 import styled from "styled-components";
-import {useTypedDispatch} from '../hooks/redux.ts';
-import {setTitle, setLocation, setDateRange} from '../store/plannerSlice.ts';
 import Container from "../components/Container.tsx";
 import DateRangeInput from "@/components/formFields/DateInput.tsx";
 import SubmitButton from "@/components/formFields/SubmitButton.tsx";
 import TextInput from "@/components/formFields/TextInput.tsx";
 import {Typography} from "@mui/material";
+// import {ITravelPlan} from "@/type";
 
 const MainPage: React.FC = () => {
   const [title, setTitleInput] = useState('');
@@ -16,21 +16,35 @@ const MainPage: React.FC = () => {
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const dispatch = useTypedDispatch();
+  // const dispatch = useTypedDispatch();
   const navigate = useNavigate();
 
   const handleStartPlanning = () => {
-    setIsSubmitted(true); // 제출되었음을 표시
+    setIsSubmitted(true);
 
     if (!title || !location || !startDate || !endDate) {
-      // 필드 중 하나라도 비어 있으면 함수를 종료합니다.
       return;
     }
-    dispatch(setTitle(title));
-    dispatch(setLocation(location));
-    dispatch(setDateRange({ startDate, endDate }));
-    navigate("/travel/:id");
-  };
+
+    navigate('/travel');
+  }
+  //
+  //   try {
+  //     const response = await axios.post('/api/travel-detail', {
+  //       title,
+  //       location,
+  //       startDate,
+  //       endDate,
+  //     } as ITravelPlan);
+  //
+  //     const travelId = response.data.id; // 백엔드에서 반환된 여행 계획 ID
+  //
+  //     // 페이지 이동
+  //     navigate(`/travel/${travelId}`);
+  //   } catch (error) {
+  //     console.error('여행 계획 저장 중 오류 발생:', error);
+  //   }
+  // };
 
 
   return (
@@ -53,14 +67,15 @@ const MainPage: React.FC = () => {
             label='여행 장소'
             value={location}
             onChange={(e) => setLocationInput(e.target.value)}
-            error={isSubmitted && !title}
-            helperText={isSubmitted && !title ? '여행 장소를 입력해 주세요.' : ''}
+            error={isSubmitted && !location}
+            helperText={isSubmitted && !location ? '여행 장소를 입력해 주세요.' : ''}
           />
 
           <DateRangeInput
             label="시작일"
             value={startDate}
             onChange={(newDate) => setStartDate(newDate)}
+            maxDate={endDate}
             required={true}
             error={isSubmitted && !startDate}
             helperText={isSubmitted && !startDate ? '시작일을 선택해 주세요.' : ''}
@@ -76,9 +91,8 @@ const MainPage: React.FC = () => {
           />
 
         </InputArea>
-        <SubmitButton
-          onClick={handleStartPlanning}
-        >여행 시작하기
+        <SubmitButton onClick={() => { handleStartPlanning(); }}>
+          여행 시작하기
         </SubmitButton>
       </Contents>
     </Container>

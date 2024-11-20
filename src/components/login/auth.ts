@@ -1,8 +1,6 @@
 // auth.js
 import { getAuth, signInWithPopup, GoogleAuthProvider, setPersistence, browserSessionPersistence } from 'firebase/auth';
 import {app} from './firebaseConfig';
-import firebase from "firebase/compat/app";
-import Persistence = firebase.auth.Auth.Persistence;
 
 
 const auth = getAuth(app);

@@ -10,6 +10,7 @@ type TDateInputProps = {
   value: Date | null;
   onChange: (date: Date | null) => void;
   minDate?: Date | null;
+  maxDate?: Date | null;
   required?: boolean;
   error?: boolean;
   helperText?: string;
@@ -20,6 +21,7 @@ const DateRangeInput: FC<TDateInputProps> = ({
   value,
   onChange,
   minDate,
+  maxDate,
   required,
   error,
   helperText,
@@ -34,6 +36,7 @@ const DateRangeInput: FC<TDateInputProps> = ({
           value={value ? dayjs(value) : null}
           onChange={(newValue) => onChange(newValue ? newValue.toDate() : null)}
           minDate={minDate ? dayjs(minDate) : undefined}
+          maxDate={maxDate ? dayjs(maxDate) : undefined}
           sx={{width: '100%'}}
 
           slotProps={{
