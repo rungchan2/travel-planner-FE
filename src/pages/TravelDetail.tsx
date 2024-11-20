@@ -54,7 +54,6 @@ export default function TravelDetail() {
   };
 
   return (
-    <Container>
       <TDContainer>
         <DragDropContext onDragEnd={onDragEnd}>
           <div className="left">
@@ -81,7 +80,6 @@ export default function TravelDetail() {
           </div>
         </DragDropContext>
       </TDContainer>
-    </Container>
   );
 }
 

@@ -3,13 +3,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 interface DateRange {
   startDate: Date | null;
   endDate: Date | null;
-};
+}
 
 interface PlannerState {
   title: string;
   location: string;
   dateRange: DateRange;
-};
+}
 
 const initialState: PlannerState = {
   title: '',

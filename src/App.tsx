@@ -5,18 +5,22 @@ import MyPage from "./pages/MyPage.tsx";
 import TravelDetail from "./pages/TravelDetail";
 import TravelList from "./pages/TravelList.tsx";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
+<!-- 
+import {BrowserRouter} from "react-router-dom";
+import NavBar from "./components/NavBar";
+import {AuthProvider} from "@/lib/AuthContext.tsx";
+import AppRoutes from "@/routes/AppRoutes.tsx";
+ -->
 
 function App() {
+
   return (
-    <BrowserRouter future={{ v7_startTransition: true }}>
-      <NavBar />
-      <Routes>
-        <Route path="/" element={<Main />} />
-        <Route path="/travel" element={<TravelList />} />
-        <Route path="/travel/:id" element={<TravelDetail />} />
-        <Route path="/mypage" element={<MyPage />} />
-      </Routes>
-    </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter future={{v7_startTransition: true}}>
+          <NavBar />
+          <AppRoutes/>
+        </BrowserRouter>
+      </AuthProvider>
   );
 }
 

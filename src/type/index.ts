@@ -39,6 +39,13 @@ export interface IDestinationType {
     count: number;
 }
 
+export interface ITravelPlan {
+    title: string;
+    location: string;
+    startDate: Date;
+    endDate: Date;
+}
+
 // export interface ITripDestination {
 //     tripDestinationId: string;
 //     dateId: string;

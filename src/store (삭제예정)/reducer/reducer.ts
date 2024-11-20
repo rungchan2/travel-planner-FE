@@ -1,7 +1,7 @@
 import {plannerReducer} from "../plannerSlice.ts";
 
 const reducer = {
-  planner: plannerReducer
+  planner: plannerReducer,
 }
 
 export default reducer;
