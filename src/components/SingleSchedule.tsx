@@ -1,7 +1,7 @@
-import React from "react";
-import { styled } from "styled-components";
 import { ISchedule } from "../type";
+import React from "react";
 import { Draggable } from "react-beautiful-dnd";
+import { styled } from "styled-components";
 
 interface SingleScheduleProps {
   data: ISchedule;
@@ -9,21 +9,24 @@ interface SingleScheduleProps {
 }
 
 const SingleSchedule: React.FC<SingleScheduleProps> = ({ data, index }) => {
-
   return (
     <Draggable draggableId={data.scheduleId} index={index}>
       {(provided) => (
-        <ScheduleContainer ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+        <ScheduleContainer
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+        >
           <ContentColumn>
             <ImageWrapper>
-          <PlaceholderImage />
-        </ImageWrapper>
-        <InfoWrapper>
-          <TagWrapper>
-            <Tag>식당</Tag>
-          </TagWrapper>
-          <Description>{data.description}</Description>
-        </InfoWrapper>
+              <PlaceholderImage />
+            </ImageWrapper>
+            <InfoWrapper>
+              <TagWrapper>
+                <Tag>식당</Tag>
+              </TagWrapper>
+              <Description>{data.description}</Description>
+            </InfoWrapper>
           </ContentColumn>
         </ScheduleContainer>
       )}

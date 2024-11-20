@@ -1,11 +1,13 @@
 import { ISchedule } from "../type";
-import { styled } from "styled-components";
+import SingleSchedule from "./SingleSchedule";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { useState } from "react";
-import SingleSchedule from "./SingleSchedule";
 import dayjs from "dayjs";
-import "dayjs/locale/ko"; //한국어
+import React from "react";
+import { useState } from "react";
+import { styled } from "styled-components";
+import "dayjs/locale/ko";
+//한국어
 import AddSchedule from "./AddSchedule";
 import { Droppable } from "react-beautiful-dnd";
 
@@ -47,18 +49,21 @@ export default function SingleDay({ date }: { date: string }) {
   return (
     <Droppable droppableId={date}>
       {(provided) => (
-        <SingleDayContainer ref={provided.innerRef} {...provided.droppableProps}>
+        <SingleDayContainer
+          ref={provided.innerRef}
+          {...provided.droppableProps}
+        >
           <div className="before" onClick={() => setIsOpen(!isOpen)}>
-          {dayjs(date).format("YYYY-MM-DD (ddd)")}
+            {dayjs(date).format("YYYY-MM-DD (ddd)")}
             {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </div>
           <div className="after">
             {isOpen &&
-            filteredSchedules.map((data, index) => (
-              <SingleSchedule key={index} data={data} index={index} />
-            ))}
-        </div>
-        {isOpen ? <AddSchedule /> : null}
+              filteredSchedules.map((data, index) => (
+                <SingleSchedule key={index} data={data} index={index} />
+              ))}
+          </div>
+          {isOpen ? <AddSchedule /> : null}
         </SingleDayContainer>
       )}
     </Droppable>
