@@ -1,4 +1,3 @@
-import React from "react";
 import { ISchedule } from "../type";
 import { styled } from "styled-components";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";

@@ -10,7 +10,7 @@ const SubmitButton: React.FC<TSubmitButtonProps> = ({onClick, children}) => (
   <Button
     variant="contained"
     type="submit"
-    sx={{width: '100%'}}
+    sx={{width: '100%', height: '48px'}}
     onClick={onClick} // 전달된 onClick 핸들러를 적용
   >
     {children}
