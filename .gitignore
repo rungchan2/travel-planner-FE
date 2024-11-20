@@ -22,6 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+<<<<<<< HEAD
 .DS_STORE
 node_modules
 scripts/flow/*/.flowconfig
@@ -61,3 +62,10 @@ packages/react-devtools-fusebox/dist
 packages/react-devtools-inline/dist
 packages/react-devtools-shell/dist
 packages/react-devtools-timeline/dist
+=======
+
+# # Tailwind CSS 관련
+# tailwind.config.js
+# tailwind.config.cjs
+# tailwind.config.ts
+>>>>>>> main

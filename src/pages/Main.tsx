@@ -25,7 +25,7 @@ const MainPage: React.FC = () => {
     dispatch(setTitle(title));
     dispatch(setLocation(location));
     dispatch(setDateRange({ startDate, endDate }));
-    navigate('/'); // 여행 계획 페이지로 이동
+    navigate('/travel/detail', { state: { travelId: '123' } }); // 여행 계획 페이지로 이동
   };
 
   return (
