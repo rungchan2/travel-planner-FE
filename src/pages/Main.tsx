@@ -48,7 +48,7 @@ const MainPage: React.FC = () => {
 
   return (
       <Contents>
-        <Typography component="h1">여행을 시작해보세요.</Typography>
+        <Typography component="h1">트래블 플래너와 함께 여행을 시작해보세요.</Typography>
         <InputArea>
           <TextInput
             required={true}
