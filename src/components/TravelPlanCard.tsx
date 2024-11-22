@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/dialog";
 import { Pencil, X } from "lucide-react";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 interface TripCardProps {
   plan: TripPlan;
@@ -30,22 +30,6 @@ interface TripCardProps {
     endDate: string;
   }) => void;
 }
-
-// interface TripCardProps {
-//   id: string;
-//   userId: string;
-//   name: string;
-//   description: string;
-//   startDate: string;
-//   endDate: string;
-//   onEdit: (updatedTrip: {
-//     id: string;
-//     destination: string;
-//     startDate: string;
-//     endDate: string;
-//   }) => void;
-//   onDelete: (id: string) => void;
-// }
 
 interface TripPlan {
   id: string;
@@ -85,7 +69,20 @@ export default function TravelPlanCard({
   const daysLeft = calculateDaysLeft(startDate);
   const daysLeftText = getDaysLeftText(daysLeft);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-
+  const dialog = document.getElementById("dialog");
+  dialog?.addEventListener("click", (e) => {
+    const target = e.target;
+    console.log(target);
+    const rect = target.getBoundingClientRect();
+    if (
+      rect.left > e.clientX ||
+      rect.right < e.clientX ||
+      rect.top > e.clientY ||
+      rect.bottom < e.clientY
+    ) {
+      setIsEditModalOpen(false);
+    }
+  });
   return (
     <Link
       to={`/travel/${id}`}
@@ -139,23 +136,31 @@ export default function TravelPlanCard({
           <p>{description}</p>
         </CardContent>
       </Card>
-      <Dialog
-        open={isEditModalOpen}
-        onOpenChange={(isOpen) => setIsEditModalOpen(isOpen)}
+      <div
+        id="dialog"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        }}
       >
-        <DialogContent onClick={(e) => e.stopPropagation()}>
-          <DialogHeader>
-            <DialogTitle>여행 수정</DialogTitle>
-          </DialogHeader>
-          <EditTripForm
-            trip={plan}
-            onSave={(updatedTrip: TripPlan) => {
-              onEdit(updatedTrip);
-            }}
-            onCancel={() => setIsEditModalOpen(false)} //
-          />
-        </DialogContent>
-      </Dialog>
+        <Dialog
+          open={isEditModalOpen}
+          onOpenChange={(isOpen) => setIsEditModalOpen(isOpen)}
+        >
+          <DialogContent onClick={(e) => e.stopPropagation()}>
+            <DialogHeader>
+              <DialogTitle>여행 수정</DialogTitle>
+            </DialogHeader>
+            <EditTripForm
+              trip={plan}
+              onSave={(updatedTrip: TripPlan) => {
+                onEdit(updatedTrip);
+              }}
+              onCancel={() => setIsEditModalOpen(false)} //
+            />
+          </DialogContent>
+        </Dialog>
+      </div>
     </Link>
   );
 }
