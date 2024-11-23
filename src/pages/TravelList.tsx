@@ -1,3 +1,4 @@
+import TravelPlanCard from "../components/TravelPlanCard";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
@@ -7,92 +8,34 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Description } from "@mui/icons-material";
 import axios from "axios";
-import { PlusCircle, X } from "lucide-react";
+import { getAuth } from "firebase/auth";
+import { PlusCircle, X, Pencil } from "lucide-react";
 import React from "react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 interface TripPlan {
   id: string;
-  userId: number;
+  userId: string;
   name: string;
   description: string;
   startDate: string;
   endDate: string;
-  imagePath: string;
+  imagePath?: string;
 }
+
 //테스트용 토근
-const BASE_URL = "https://project-tvimk.run.goorm.site";
-const AUTH_TOKEN = "";
-axios.defaults.baseURL = "https://project-tvimk.run.goorm.site/";
-axios.defaults.headers.common["Authorization"] = AUTH_TOKEN;
-
-const calculateDaysLeft = (startDate: string): number => {
-  const today = new Date();
-  const start = new Date(startDate);
-  const timeDiff = start.getTime() - today.getTime();
-  return Math.ceil(timeDiff / (1000 * 3600 * 24));
-};
-
-const getDaysLeftText = (daysLeft: number): string => {
-  if (daysLeft === 0) return "D-Day";
-  if (daysLeft > 0) return `D-${daysLeft}`;
-  return `D+${Math.abs(daysLeft)}`;
-};
-
-const getDaysLeftColor = (daysLeft: number): string => {
-  if (daysLeft === 0) return "bg-green-500 text-white";
-  if (daysLeft > 0 && daysLeft <= 7) return "bg-red-500 text-white";
-  if (daysLeft > 0) return "bg-blue-500 text-white";
-  return "bg-gray-500 text-white";
-};
-
-const TravelPlanCard: React.FC<{
-  plan: TripPlan;
-  onDelete: (id: string) => void;
-}> = ({ plan, onDelete }) => {
-  const daysLeft = calculateDaysLeft(plan.startDate);
-  const daysLeftText = getDaysLeftText(daysLeft);
-  return (
-    <Link
-      to={`/travel/${plan.id}`}
-      state={{
-        plan: plan,
-      }}
-      className="block"
-    >
-      <Card className="w-full relative hover:shadow-lg transition-shadow">
-        <div className="absolute top-2 right-2 z-10">
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              onDelete(plan.id);
-            }}
-            className="p-1 rounded-full bg-white/90 text-gray-500 hover:text-gray-700 hover:bg-white/95 transition-colors"
-            aria-label="삭제"
-          >
-            <X size={16} />
-          </button>
-        </div>
-        <div className="absolute top-2 left-2">
-          <Badge variant="secondary" className={getDaysLeftColor(daysLeft)}>
-            {daysLeftText}
-          </Badge>
-        </div>
-        <CardHeader className="pt-10">
-          <CardTitle>{plan.name}</CardTitle>
-          <CardDescription>
-            {plan.startDate} - {plan.endDate}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p>{plan.description}</p>
-        </CardContent>
-      </Card>
-    </Link>
-  );
-};
+axios.defaults.baseURL = "http://localhost:3000";
+axios.defaults.withCredentials = true;
+//axios.defaults.headers.common["Authorization"] = AUTH_TOKEN;
 
 const NoPlanCard: React.FC = () => {
   return (
@@ -111,12 +54,40 @@ const NoPlanCard: React.FC = () => {
 
 const Travel: React.FC = () => {
   const [myTrip, setTrip] = useState<TripPlan[]>([]);
+  const handleEdit = async (updatedTrip: TripPlan) => {
+    const { id, name, description, startDate, endDate } = updatedTrip;
+
+    try {
+      await axios
+        .put(`/trip/${id}`, {
+          name,
+          description,
+          startDate,
+          endDate,
+        })
+        .then(() => {
+          setTrip(myTrip.map((trip) => (trip.id === id ? updatedTrip : trip)));
+        });
+    } catch (error) {
+      console.log("handleEdit 오류 발생:", error);
+    }
+  };
 
   const fetchTravelPlans = async () => {
     try {
-      axios.get("/api/trip").then((response) => {
-        setTrip(response.data);
-      });
+      getAuth()
+        .currentUser?.getIdToken()
+        .then((token) => {
+          axios
+            .get("/trip", {
+              headers: {
+                authorization: `Bearer ${token}`,
+              },
+            })
+            .then((response) => {
+              setTrip(response.data);
+            });
+        });
     } catch (error) {
       console.error("오류 발생:", error);
     }
@@ -128,7 +99,7 @@ const Travel: React.FC = () => {
 
   const handleDeleteByDB = async (id: string) => {
     try {
-      axios.delete(`/api/trip/${id}`).then((response) => {
+      await axios.delete(`/trip/${id}`).then((response) => {
         if (response.status === 200) {
           setTrip((prevPlans) => prevPlans.filter((plan) => plan.id !== id));
         } else {
@@ -136,10 +107,9 @@ const Travel: React.FC = () => {
         }
       });
     } catch (error) {
-      console.error("오류 발생:", error);
+      console.error("Delete byDB 오류 발생:", error);
     }
   };
-
   const numberOfPlans = myTrip.length;
 
   return (
@@ -159,6 +129,7 @@ const Travel: React.FC = () => {
             <TravelPlanCard
               key={plan.id}
               plan={plan}
+              onEdit={handleEdit}
               onDelete={handleDeleteByDB}
             />
           ))
