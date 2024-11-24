@@ -1,13 +1,10 @@
 import React, {useState} from 'react';
-// import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 import styled from "styled-components";
-import Container from "../components/Container.tsx";
 import DateRangeInput from "@/components/formFields/DateInput.tsx";
 import SubmitButton from "@/components/formFields/SubmitButton.tsx";
 import TextInput from "@/components/formFields/TextInput.tsx";
 import {Typography} from "@mui/material";
-// import {ITravelPlan} from "@/type";
 
 const MainPage: React.FC = () => {
   const [title, setTitleInput] = useState('');
@@ -16,7 +13,6 @@ const MainPage: React.FC = () => {
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // const dispatch = useTypedDispatch();
   const navigate = useNavigate();
 
   const handleStartPlanning = () => {
@@ -27,24 +23,6 @@ const MainPage: React.FC = () => {
     }
     navigate('/travel');
   }
-  // 서버 연결 이후 활성화 예정
-  //   try {
-  //     const response = await axios.post('/api/travel-detail', {
-  //       title,
-  //       location,
-  //       startDate,
-  //       endDate,
-  //     } as ITravelPlan);
-  //
-  //     const travelId = response.data.id; // 백엔드에서 반환된 여행 계획 ID
-  //
-  //     // 페이지 이동
-  //     navigate(`/travel/${travelId}`);
-  //   } catch (error) {
-  //     console.error('여행 계획 저장 중 오류 발생:', error);
-  //   }
-  // };
-
 
   return (
       <Contents>
@@ -89,7 +67,7 @@ const MainPage: React.FC = () => {
           />
 
         </InputArea>
-        <SubmitButton onClick={() => { handleStartPlanning(); }}>
+        <SubmitButton onClick={ handleStartPlanning}>
           여행 시작하기
         </SubmitButton>
       </Contents>

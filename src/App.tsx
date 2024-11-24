@@ -1,19 +1,16 @@
 import "./App.css";
 import NavBar from "./components/NavBar";
-import { BrowserRouter } from "react-router-dom";
-import Footer from "@/components/Footer.tsx";
+import {BrowserRouter} from "react-router-dom";
 import {AuthProvider} from "@/lib/AuthContext.tsx";
 import AppRoutes from "@/routes/AppRoutes.tsx";
-import {globalStyle} from "@/styles/globalStyle.ts";
 
 function App() {
 
   return (
-      <AuthProvider>
+      <AuthProvider >
         <BrowserRouter future={{v7_startTransition: true}}>
-          <NavBar/>
+          <NavBar />
           <AppRoutes/>
-          <Footer/>
         </BrowserRouter>
       </AuthProvider>
   );

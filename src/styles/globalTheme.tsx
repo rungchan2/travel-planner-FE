@@ -1,5 +1,6 @@
 import React from "react";
 import { createTheme } from '@mui/material';
+import {globalStyle} from "@/styles/globalStyle.ts";
 
 
 export interface ThemeProps {
@@ -25,7 +26,7 @@ declare module "@mui/material/styles" {
 
 export const globalTheme = createTheme ({
   typography: {
-    fontFamily: ["Pretendard Variable", 'Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'Roboto', "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", 'sans-serif',].join(','),
+    fontFamily: globalStyle,
   },
   palette: {
     colors: {

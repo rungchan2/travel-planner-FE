@@ -79,12 +79,13 @@ const Copyright = styled.div`
 const Links = styled.div`
     display: flex;
     flex-direction: column;
-    color: #d9d9d9;
-    font-weight: 600;
-    font-size: 1.6rem;
-    justify-content: space-between;
+    color: #ffffff;
+    font-weight: 400;
+    font-size: 1rem;
+    justify-content: flex-end;
+    gap: 0.6rem;
     padding-top: 0.2rem;
-text-align: right;
+    text-align: right;
     cursor: pointer;
     text-decoration: underline;
 `
