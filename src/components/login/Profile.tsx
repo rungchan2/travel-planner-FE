@@ -1,7 +1,7 @@
 import { useAuth } from '@/lib/AuthContext.tsx';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
-import defaultProfile from '../assets/default_profile.svg';
+import defaultProfile from '../../assets/default_profile.svg';
 import LogoutModal from '@/components/login/LogoutModal.tsx';
 
 export default function Profile() {
@@ -88,6 +88,7 @@ const ProfileDropdown = styled.ul`
     display: flex;
     flex-direction: column;
     position: absolute;
+    z-index: 999999999999999;
 
     gap: 8px;
     width: auto;

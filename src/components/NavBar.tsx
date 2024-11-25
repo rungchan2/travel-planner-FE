@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import CardTravelIcon from "@mui/icons-material/CardTravel";
-import Profile from '@/components/Profile.tsx';
+import Profile from '@/components/login/Profile.tsx';
 
 export default function NavBar() {
   

@@ -2,10 +2,13 @@ import styled from 'styled-components';
 import Container from "./Container.tsx";
 import CardTravelOutlinedIcon from '@mui/icons-material/CardTravelOutlined';
 import {Link} from "react-router-dom";
-import {signOut} from "./login/auth.ts";
+import { useState } from 'react';
+import LogoutModal from '@/components/login/LogoutModal.tsx';
 
 
 function Footer() {
+  const [ isModalOpen, setIsModalOpen ] = useState(false);
+  
   return (
     <FooterBase>
       <Container>
@@ -22,10 +25,12 @@ function Footer() {
         <Links>
           <Link to={'/'}>Main</Link>
           <Link to={'/travel'}>Travel</Link>
-          <div onClick={signOut} >Logout</div>
+          <div onClick={ () => setIsModalOpen(true) } >Logout</div>
         </Links>
         </Contents>
       </Container>
+      
+      <LogoutModal open={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </FooterBase>
   );
 }

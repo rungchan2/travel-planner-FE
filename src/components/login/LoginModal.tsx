@@ -1,22 +1,22 @@
 import {signInWithGoogle} from '../login/auth.ts';
-import { Modal, Button, Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import {Google} from "@mui/icons-material";
-import styled from 'styled-components';
+import ModalComponent from '@/components/Modal.tsx';
 
 const GoogleLoginModal = () => {
   
   const handleLogin = async () => {
     try {
       await signInWithGoogle();
+      
     } catch (error) {
       console.error('로그인 실패: ', error);
-      // alert('로그인 중 오류가 발생했습니다. 다시 시도해 주세요.');
+      alert('로그인 중 오류가 발생했습니다. 다시 시도해 주세요.');
     }
   };
 
   return (
-    <Modal open={true}>
-      <Contents>
+    <ModalComponent open={true}>
         <h4>
           로그인
         </h4>
@@ -39,40 +39,8 @@ const GoogleLoginModal = () => {
           <Google fontSize="medium"/>
           <Typography variant='body2' component='span'>Google 계정으로 시작하기</Typography>
         </Button>
-      </Contents>
-    </Modal>
+    </ModalComponent>
   );
 };
-
-const Contents = styled.div`
-    position: absolute;
-    width: 400px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #fff;
-    padding: 32px;
-    box-shadow: 0 0 24px rgba(0, 0, 0, 0.3);
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 22px;
-    text-align: center;
-    border: none;
-    outline: none;
-  
-  h4 {
-    font-size: 36px;
-    word-break: keep-all;
-    font-weight: 600;
-    line-height: 1;
-  }
-  
-  p {
-    line-height: 1.4;
-    word-break: keep-all;
-    color: #828282;
-  }
-`
 
 export default GoogleLoginModal;

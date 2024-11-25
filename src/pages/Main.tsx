@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import {useNavigate} from 'react-router-dom';
 import styled from "styled-components";
-import DateRangeInput from "@/components/formFields/DateInput.tsx";
-import SubmitButton from "@/components/formFields/SubmitButton.tsx";
-import TextInput from "@/components/formFields/TextInput.tsx";
+import DateRangeInput from '@/components/main/formFields/DateInput.tsx';
+import SubmitButton from '@/components/main/formFields/SubmitButton.tsx';
+import TextInput from '@/components/main/formFields/TextInput.tsx';
 import {Typography} from "@mui/material";
 import { sendRequest } from '@/components/api/api.ts';
 import { ITravelPlan } from '@/type';
 import { useAlert } from '@/hooks/useAlert.ts';
+import ImgAutoSlide from '@/components/main/ImgAutoSlide.tsx';
+import { slides } from '@/components/main/ImgFile.tsx';
 
 const MainPage: React.FC = () => {
   const { showAlert } = useAlert();
@@ -18,8 +20,10 @@ const MainPage: React.FC = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const navigate = useNavigate();
+  const [ isLoading, setIsLoading ] = useState(false);
   
   const createNewTravelPlan = async () => {
+    
     // 유효성 검사
     setIsSubmitted(true);
     if (!title || !location || !startDate || !endDate) {
@@ -33,23 +37,34 @@ const MainPage: React.FC = () => {
     };
     
     try {
+      setIsLoading(true);
       const response = await sendRequest('POST', '/api/trip', tripData);
       
       showAlert('여행이 성공적으로 생성되었습니다.');
       navigate('/travel');
       
-      return response.data
+      setIsSubmitted(false);
+      setIsLoading(false);
+      
+      return response.data;
     } catch (error) {
       console.error(error);
       showAlert('여행 생성에 실패하였습니다. 다시 시도해주세요.');
+      setIsLoading(false);
       throw error;
     }
 
   };
   
   return (
-      <Contents>
+    <Contents>
+      
+      <ImgArea>
         <Typography component="h1">트래블 플래너와 함께 여행을 시작해보세요.</Typography>
+        <ImgAutoSlide slides={ slides } />
+      </ImgArea>
+      
+      <FormArea>
         <InputArea>
           <TextInput
             required={true}
@@ -90,24 +105,51 @@ const MainPage: React.FC = () => {
           />
 
         </InputArea>
-        <SubmitButton onClick={ createNewTravelPlan }>
-          여행 시작하기
+        <SubmitButton onClick={ createNewTravelPlan } disabled={ isLoading }>
+          { isLoading ? '제출 중...' : '여행 시작하기' }
         </SubmitButton>
-      </Contents>
+      </FormArea>
+      
+    
+    </Contents>
   );
 };
 
-
 const Contents = styled.div`
-    margin: 80px 0;
+  margin: 80px 0;
+  
+  display: flex;
+  flex-direction: column;
+  
+  gap: 32px;
+`
+
+const ImgArea = styled.div`
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+  
+  h1 {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-90%, -50%);
+    z-index: 999;
+    font-size: 2.8rem;
+    font-weight: 700;
+    //text-align: center;
+    color: #fff;
+  }
+  
+`
+
+
+const FormArea = styled.div`
     display: flex;
     flex-direction: column;
     gap: 20px;
     
-    h1 {
-        font-size: 2rem;
-        font-weight: 700;
-    }
+
 `;
 
 const InputArea = styled.div`
