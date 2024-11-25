@@ -1,17 +1,20 @@
 import { useAuth } from '@/lib/AuthContext.tsx';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
-import { signOut } from '@/components/login/auth.ts';
+import defaultProfile from '../assets/default_profile.svg';
+import LogoutModal from '@/components/login/LogoutModal.tsx';
 
 export default function Profile() {
 	const { user, email, displayName, photoURL } = useAuth();
-	const [ view, setView ] = useState(false);
+	const [ dropdownView, setDropdownView ] = useState(false);
+	const [ isModalOpen, setIsModalOpen ] = useState(false);
+	
 	
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
 			const target = event.target as HTMLElement;
 			if (!target.closest('.profile-drop, .profile-container')) {
-				setView(false);
+				setDropdownView(false);
 			}
 		};
 		document.addEventListener('mousedown', handleClickOutside);
@@ -20,13 +23,17 @@ export default function Profile() {
 		};
 	}, []);
 	
-	
+	// 프로필 클릭 시 드롭다운 박스
 	const ProfileDetail = () => {
 		return (
 			<>
 				<li className="name">{ displayName }</li>
 				<li>{ email }</li>
-				<li><LogoutStyles onClick={ signOut }>로그아웃</LogoutStyles></li>
+				<li>
+					<LogoutStyles onClick={ () => setIsModalOpen(true) }>
+						로그아웃
+					</LogoutStyles>
+				</li>
 			</>
 		
 		);
@@ -35,20 +42,21 @@ export default function Profile() {
 	return (
 		<ProfileContainer className="profile-container">
 			
-			<ProfileStyled onClick={ () => setView(!view) }>
+			<ProfileStyled onClick={ () => setDropdownView(!dropdownView) }>
 				{ user ?
 					(<img src={ photoURL || '' } alt="" />)
 					:
-					(<ProfileStyled />)
+					(<img src={ defaultProfile } alt="" />)
 				}
 			</ProfileStyled>
-			{ user && view &&
+			{ user && dropdownView &&
 				(
 					<ProfileDropdown className="profile-drop">
 						<ProfileDetail />
 					</ProfileDropdown>
 				)
 			}
+			<LogoutModal open={isModalOpen} onClose={() => setIsModalOpen(false)} />
 		
 		</ProfileContainer>
 	);
@@ -69,7 +77,6 @@ const ProfileStyled = styled.div`
     display: flex;
     height: 36px;
     width: 36px;
-    background-color: #6c757d;
     border-radius: 50%;
 		cursor: pointer;
 
@@ -103,6 +110,5 @@ const ProfileDropdown = styled.ul`
 
 const ProfileContainer = styled.div`
     padding: 0.5rem 1rem;
-    color: #333;
     position: relative;
 `;

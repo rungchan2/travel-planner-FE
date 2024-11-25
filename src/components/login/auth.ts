@@ -6,7 +6,7 @@ import {
   browserSessionPersistence,
 } from 'firebase/auth';
 import { app } from '@/lib/firebaseConfig.ts';
-import { sendAuthRequest } from '@/components/api/auth.api.ts';
+import { sendAuthRequest } from '@/components/api/api.ts';
 
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
@@ -26,12 +26,6 @@ export const signInWithGoogle = async () => {
   }
 }
 
-export const signOut = async () => {
-  
-  try {
-    await auth.signOut();
-    
-  } catch (error) {
-    console.error('로그아웃 중 오류가 발생했습니다: ', error);
-  }
+export const signOut = () => {
+  return auth.signOut();
 };

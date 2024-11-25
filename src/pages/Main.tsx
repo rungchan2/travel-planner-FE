@@ -1,12 +1,16 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {useNavigate} from 'react-router-dom';
 import styled from "styled-components";
 import DateRangeInput from "@/components/formFields/DateInput.tsx";
 import SubmitButton from "@/components/formFields/SubmitButton.tsx";
 import TextInput from "@/components/formFields/TextInput.tsx";
 import {Typography} from "@mui/material";
+import { sendRequest } from '@/components/api/api.ts';
+import { ITravelPlan } from '@/type';
+import { useAlert } from '@/hooks/useAlert.ts';
 
 const MainPage: React.FC = () => {
+  const { showAlert } = useAlert();
   const [title, setTitleInput] = useState('');
   const [location, setLocationInput] = useState('');
   const [startDate, setStartDate] = useState<Date | null>(null);
@@ -14,16 +18,35 @@ const MainPage: React.FC = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const navigate = useNavigate();
-
-  const handleStartPlanning = () => {
+  
+  const createNewTravelPlan = async () => {
+    // 유효성 검사
     setIsSubmitted(true);
-
     if (!title || !location || !startDate || !endDate) {
       return;
     }
-    navigate('/travel');
-  }
+    const tripData: ITravelPlan = {
+      title,
+      location,
+      startDate,
+      endDate,
+    };
+    
+    try {
+      const response = await sendRequest('POST', '/api/trip', tripData);
+      
+      showAlert('여행이 성공적으로 생성되었습니다.');
+      navigate('/travel');
+      
+      return response.data
+    } catch (error) {
+      console.error(error);
+      showAlert('여행 생성에 실패하였습니다. 다시 시도해주세요.');
+      throw error;
+    }
 
+  };
+  
   return (
       <Contents>
         <Typography component="h1">트래블 플래너와 함께 여행을 시작해보세요.</Typography>
@@ -67,7 +90,7 @@ const MainPage: React.FC = () => {
           />
 
         </InputArea>
-        <SubmitButton onClick={ handleStartPlanning}>
+        <SubmitButton onClick={ createNewTravelPlan }>
           여행 시작하기
         </SubmitButton>
       </Contents>
