@@ -116,7 +116,7 @@ const MainPage: React.FC = () => {
 };
 
 const Contents = styled.div`
-  margin: 80px 0;
+  margin: 40px 0;
   
   display: flex;
   flex-direction: column;
