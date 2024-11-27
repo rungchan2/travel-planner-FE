@@ -1,11 +1,10 @@
-import React from "react";
-import Container from "../components/Container";
 import styled from "styled-components";
 import { ITrip } from "../type";
 import SingleDay from "../components/SingleDay";
 import dayjs from "dayjs";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
-
+import { TripPlan } from "./TravelList";
+import { useSchedule } from "@/hooks/useSchedule";
 
 const scheduleData: ITrip = {
   tripId: "1",
@@ -17,7 +16,17 @@ const scheduleData: ITrip = {
   isVisited: false,
 };
 
-export default function TravelDetail() {
+
+export default function TravelDetail(props: {props: TripPlan | null}) {
+  const { scheduleList } = useSchedule(props.props?.id || 0);
+
+  
+  if (!props.props) {
+    return <>데이터가 없습니다.</>;
+  }
+
+  console.log(scheduleList);
+
   const dayCount =
     dayjs(scheduleData.endDate).diff(dayjs(scheduleData.startDate), "day") + 1;
 

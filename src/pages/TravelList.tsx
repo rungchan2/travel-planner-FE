@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import { Button, buttonVariants } from "@/components/ui/button";
+import {  buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardHeader,
@@ -13,8 +13,10 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-interface TripPlan {
-  id: string;
+export const BASE_URL = "https://project-tvimk.run.goorm.site";
+
+export interface TripPlan {
+  id: number;
   userId: number;
   name: string;
   description: string;
@@ -23,8 +25,7 @@ interface TripPlan {
   imagePath: string;
 }
 //테스트용 토근
-const BASE_URL = "https://project-tvimk.run.goorm.site";
-const AUTH_TOKEN = "";
+const AUTH_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6InVzZXIxIiwiZW1haWwiOiJ1c2VyMUBnbWFpbC5jb20iLCJpYXQiOjE3MzI3MDE5NzEsImV4cCI6MTczMjc4ODM3MX0.WFkr-CYxtV5SVLYx_H3OsPsIYPk6NNl_id6EcLGK5h0";
 axios.defaults.baseURL = "https://project-tvimk.run.goorm.site/";
 axios.defaults.headers.common["Authorization"] = AUTH_TOKEN;
 
@@ -50,13 +51,13 @@ const getDaysLeftColor = (daysLeft: number): string => {
 
 const TravelPlanCard: React.FC<{
   plan: TripPlan;
-  onDelete: (id: string) => void;
+  onDelete: (id: number) => void;
 }> = ({ plan, onDelete }) => {
   const daysLeft = calculateDaysLeft(plan.startDate);
   const daysLeftText = getDaysLeftText(daysLeft);
   return (
     <Link
-      to={`/travel/${plan.id}`}
+      to={`/travel/detail`}
       state={{
         plan: plan,
       }}
@@ -126,7 +127,7 @@ const Travel: React.FC = () => {
     fetchTravelPlans();
   }, []);
 
-  const handleDeleteByDB = async (id: string) => {
+  const handleDeleteByDB = async (id: number) => {
     try {
       axios.delete(`/api/trip/${id}`).then((response) => {
         if (response.status === 200) {
@@ -140,7 +141,7 @@ const Travel: React.FC = () => {
     }
   };
 
-  const numberOfPlans = myTrip.length;
+  const numberOfPlans = myTrip.length 
 
   return (
     <div className="container mx-auto px-4 py-8">

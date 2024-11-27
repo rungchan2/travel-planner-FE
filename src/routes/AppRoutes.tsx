@@ -4,12 +4,12 @@ import { AuthContext } from '../lib/AuthContext';
 import GoogleLoginModal from '../components/login/LoginModal.tsx';
 import Main from "../pages/Main.tsx";
 import TravelList from "../pages/TravelList.tsx";
-import MyPage from "../pages/MyPage.tsx";
 import TravelDetail from "../pages/TravelDetail";
 import CircularIndeterminate from "@/components/login/LoadingIcon.tsx";
 import Container from "@/components/Container.tsx";
 import NotFoundPage from "@/pages/NotFoundPage.tsx";
-
+import Login from "@/pages/Login.tsx";
+import Signup from "@/pages/Signup.tsx";
 const AppRoutes: React.FC = () => {
   const {user, loading} = useContext(AuthContext);
 
@@ -35,7 +35,9 @@ const AppRoutes: React.FC = () => {
       <Routes>
         <Route path="/" element={<Main/>}/>
         <Route path="/travel" element={<TravelList/>}/>
-        <Route path="/travel/:id" element={<TravelDetail/>}/>
+        <Route path="/travel/detail" element={<TravelDetail props={null} />}/>
+        <Route path="/login" element={<Login/>}/>
+        <Route path="/signup" element={<Signup/>}/>
 
         {/*404 페이지*/}
         <Route path="*" element={<NotFoundPage/>}/>
