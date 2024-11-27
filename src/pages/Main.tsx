@@ -2,11 +2,11 @@ import React, {useState} from 'react';
 // import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 import styled from "styled-components";
-import Container from "../components/Container.tsx";
 import DateRangeInput from "@/components/formFields/DateInput.tsx";
 import SubmitButton from "@/components/formFields/SubmitButton.tsx";
 import TextInput from "@/components/formFields/TextInput.tsx";
 import {Typography} from "@mui/material";
+import { createTravel } from "@/api/travel.api";
 // import {ITravelPlan} from "@/type";
 
 const MainPage: React.FC = () => {
@@ -19,7 +19,22 @@ const MainPage: React.FC = () => {
   // const dispatch = useTypedDispatch();
   const navigate = useNavigate();
 
-  const handleStartPlanning = () => {
+  const handleStartPlanning = async () => {
+    try {
+      await createTravel({
+        id: Math.random(),
+        userId: 1,
+        name: title,
+        description: location,
+        startDate: startDate?.toISOString() ?? "",
+        endDate: endDate?.toISOString() ?? "",
+        imagePath: "",  
+      });
+    } catch (error) {
+      console.error(error);
+      return;
+    }
+
     setIsSubmitted(true);
 
     if (!title || !location || !startDate || !endDate) {

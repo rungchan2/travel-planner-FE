@@ -7,6 +7,8 @@ const GoogleLoginModal = () => {
     signInWithGoogle().catch((error) => {
       console.error('로그인 오류:', error);
     });
+
+    // useLogin({email: 'test@test.com', password: 'test'});
   };
 
   return (

@@ -15,11 +15,19 @@ export default function NavBar() {
         <LinkContainer>
           <NavBarItem to="/travel">Travel</NavBarItem>
           <LogoutButton onClick={signOut} ><Logout /></LogoutButton>
+          <LoginButton ><Link to="/login">로그인</Link></LoginButton>
         </LinkContainer>
       </ModifiedContainer>
     </NavBarContainer>
   );
 }
+
+const LoginButton = styled.a`
+    padding: 0.5rem 1rem;
+    color: #333;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+`;
 
 const LogoutButton = styled.a`
     padding: 0.5rem 1rem;
