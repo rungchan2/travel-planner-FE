@@ -3,6 +3,8 @@ import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import {DatePicker} from "@mui/x-date-pickers";
 import {FC} from "react";
 import dayjs from "dayjs";
+import utc from 'dayjs/plugin/utc'; // 추가
+import timezone from 'dayjs/plugin/timezone'; // 추가
 import {Box, TextFieldProps} from "@mui/material";
 
 type TDateInputProps = {
@@ -15,6 +17,10 @@ type TDateInputProps = {
   error?: boolean;
   helperText?: string;
 };
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+const userTimeZone = dayjs.tz.guess();
 
 const DateRangeInput: FC<TDateInputProps> = ({
   label,
@@ -33,10 +39,12 @@ const DateRangeInput: FC<TDateInputProps> = ({
         <DatePicker
           format="YYYY/MM/DD"
           label={label}
-          value={value ? dayjs(value) : null}
-          onChange={(newValue) => onChange(newValue ? newValue.toDate() : null)}
-          minDate={minDate ? dayjs(minDate) : undefined}
-          maxDate={maxDate ? dayjs(maxDate) : undefined}
+          value={value ? dayjs(value).tz(userTimeZone) : null}
+          onChange={(newValue) =>
+            onChange(newValue ? newValue.tz(userTimeZone).toDate() : null)
+          }
+          minDate={minDate ? dayjs(minDate).tz(userTimeZone) : undefined}
+          maxDate={maxDate ? dayjs(maxDate).tz(userTimeZone) : undefined}
           sx={{width: '100%'}}
 
           slotProps={{

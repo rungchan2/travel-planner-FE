@@ -16,7 +16,7 @@ const apiClient = axios.create({
 });
 
 // current user에 토큰 전송 (auth에 토큰 전송시 사용)
-export const sendAuthRequest = async ( method: HTTPMethod, url: string, data?: any ) => {
+export const sendAuthRequest = async ( method: HTTPMethod, url: string ) => {
 	const currentUser = auth.currentUser;
 	
 	if (!currentUser) {
@@ -26,7 +26,7 @@ export const sendAuthRequest = async ( method: HTTPMethod, url: string, data?: a
 	const idToken = await currentUser.getIdToken();
 	
 	return apiClient({
-		method, url, data,
+		method, url,
 		headers: {
 			Authorization: `Bearer ${ idToken }`,
 		}

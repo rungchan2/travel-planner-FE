@@ -40,8 +40,8 @@ export interface IDestinationType {
 }
 
 export interface ITravelPlan {
-    title: string;
-    location: string;
+    name: string;
+    description: string;
     startDate: Date;
     endDate: Date;
 }

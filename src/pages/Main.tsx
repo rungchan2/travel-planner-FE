@@ -13,8 +13,8 @@ import { slides } from '@/components/main/ImgFile.tsx';
 
 const MainPage: React.FC = () => {
   const { showAlert } = useAlert();
-  const [title, setTitleInput] = useState('');
-  const [location, setLocationInput] = useState('');
+  const [name, setNameInput] = useState('');
+  const [description, setDescription] = useState('');
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -26,12 +26,12 @@ const MainPage: React.FC = () => {
     
     // 유효성 검사
     setIsSubmitted(true);
-    if (!title || !location || !startDate || !endDate) {
+    if (!name || !description || !startDate || !endDate) {
       return;
     }
     const tripData: ITravelPlan = {
-      title,
-      location,
+      name,
+      description,
       startDate,
       endDate,
     };
@@ -70,19 +70,19 @@ const MainPage: React.FC = () => {
             required={true}
             id="outlined-required"
             label='여행 이름'
-            value={title}
-            onChange={(e) => setTitleInput(e.target.value)}
-            error={isSubmitted && !title}
-            helperText={isSubmitted && !title ? '여행 이름을 입력해 주세요.' : ''}
+            value={name}
+            onChange={(e) => setNameInput(e.target.value)}
+            error={isSubmitted && !name}
+            helperText={isSubmitted && !name ? '여행 이름을 입력해 주세요.' : ''}
           />
           <TextInput
             required={true}
             id="outlined-required"
             label='여행 장소'
-            value={location}
-            onChange={(e) => setLocationInput(e.target.value)}
-            error={isSubmitted && !location}
-            helperText={isSubmitted && !location ? '여행 장소를 입력해 주세요.' : ''}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            error={isSubmitted && !description}
+            helperText={isSubmitted && !description ? '여행 장소를 입력해 주세요.' : ''}
           />
 
           <DateRangeInput
