@@ -1,16 +1,24 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { BASE_URL } from "@/pages/TravelList";
 
+
 const DEFAULT_TIMEOUT = 30000;
 
 export const getToken = () => {
-  const token = localStorage.getItem("token");
-  return token;
+  let token = "";
+  const googleInfos = localStorage.getItem("google-infos");
+  const justToken = localStorage.getItem("token");
+  if (googleInfos) {
+    token = JSON.parse(googleInfos).stsTokenManager.accessToken;
+  }
+
+  return { token, justToken };
 };
 
 
 export const createClient = (config?: AxiosRequestConfig) => {
-  const token = getToken();
+  const { token, justToken } = getToken();
+  console.log("tokenzzzzzz", token);
 
   const axiosInstance = axios.create({
     baseURL: BASE_URL,
