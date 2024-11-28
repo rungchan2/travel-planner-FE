@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios";
-// import { BASE_URL } from "@/pages/TravelList";
+import { BASE_URL } from "@/pages/TravelList";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const DEFAULT_TIMEOUT = 30000;
 
 export const getToken = () => {
@@ -17,11 +17,11 @@ export const getToken = () => {
 
 
 export const createClient = (config?: AxiosRequestConfig) => {
-  const { token } = getToken();
+  const { token, justToken } = getToken();
   console.log("tokenzzzzzz", token);
 
   const axiosInstance = axios.create({
-    baseURL: API_BASE_URL,
+    baseURL: BASE_URL,
     timeout: DEFAULT_TIMEOUT,
     headers: {
       "Content-Type": "application/json",

@@ -3,6 +3,7 @@ import { getAuth } from 'firebase/auth';
 import { app } from '@/lib/firebaseConfig.ts';
 import { ITravelPlan } from '@/type';
 
+type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 const auth = getAuth(app);
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -14,53 +15,40 @@ const apiClient = axios.create({
 	},
 });
 
-// 토큰 자동 첨부
-apiClient.interceptors.request.use(
-	async (config) => {
-		const currentUser = auth.currentUser;
-		if (!currentUser) {
-			throw new Error('로그인이 필요합니다.');
+// current user에 토큰 전송 (auth에 토큰 전송시 사용)
+export const sendAuthRequest = async ( method: HTTPMethod, url: string, data?: any) => {
+	const currentUser = auth.currentUser;
+
+	if (!currentUser) {
+		throw new Error('잘못된 인증 경로입니다.');
+	}
+
+	const token = await currentUser.getIdToken();
+	console.log("토큰", token)
+
+	return apiClient({
+		method, url, data,
+		headers: {
+			Authorization: `Bearer ${ token }`,
 		}
-		const token = await currentUser.getIdToken();
-		config.headers.Authorization = `Bearer ${token}`;
-		return config;
-	},
-	(error) => {
-		return Promise.reject(error);
+	});
+};
+
+
+// trip 설정
+export const sendRequest = async (method: HTTPMethod, url: string, data?: ITravelPlan) => {
+	const currentUser = auth.currentUser;
+	if (!currentUser) {
+		throw new Error('로그인이 필요합니다.');
 	}
-);
+	const token = await currentUser.getIdToken(true);
+	
+	return apiClient({
+		method, url, data,
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	});
 
-// Request
-export const sendRequest = async (
-	method: string,
-	url: string,
-	data?: any
-) => {
-	try {
-		return apiClient({
-			method,
-			url,
-			data,
-		});
-	} catch (error) {
-		console.error('API 요청 에러:', error);
-		throw error;
-	}
-};
-
-// export
-export const createTrip = async (tripData: ITravelPlan) => {
-	return sendRequest('POST', '/api/trip', tripData);
-};
-
-export const getTripList = async () => {
-	return sendRequest('GET', '/api/trip');
-};
-
-export const deleteTripItem = async (id: number) => {
-	return sendRequest('DELETE', `/api/trip/${ id }`);
-};
-
-export const loginUser = async () => {
-	return sendRequest('POST', '/api/users/login');
+	
 };

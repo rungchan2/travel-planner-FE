@@ -2,7 +2,7 @@ import styled from "styled-components";
 import ScheduleForm from './ScheduleForm';
 import { useState } from 'react';
 
-export default function AddSchedule({forceUpdate, date}: {forceUpdate: () => void, date: string}) {
+export default function AddSchedule() {
     const [isClicked, setIsClicked] = useState<boolean>(false);
 
     const handleClick = () => {
@@ -10,7 +10,7 @@ export default function AddSchedule({forceUpdate, date}: {forceUpdate: () => voi
     }
   return (
     <ScheduleContainer onClick={handleClick}>
-      {isClicked ? <ScheduleForm forceUpdate={forceUpdate} date={date} setIsClicked={setIsClicked}/> : <p>+ 일정 추가</p>}
+        {isClicked ? <ScheduleForm setIsClicked={setIsClicked}/> : <p>+ 일정 추가</p>}
     </ScheduleContainer>
   )
 }

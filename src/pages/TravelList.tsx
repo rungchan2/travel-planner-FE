@@ -10,19 +10,11 @@ import {
 } from "@/components/ui/card";
 import axios from "axios";
 import { PlusCircle, X } from "lucide-react";
-import React, { useContext } from 'react';
+import React from "react";
 import { useState, useEffect } from "react";
-import { Link, Navigate, redirect } from 'react-router-dom';
-import { deleteTripItem, getTripList } from '@/components/api/api.ts';
-import { AuthContext, useAuth } from '@/lib/AuthContext.tsx';
-import CircularIndeterminate from '@/components/LoadingIcon.tsx';
-import GoToMainModal from '@/components/login/GoToMainModal.tsx';
-import LogoutModal from '@/components/login/LogoutModal.tsx';
-import { Simulate } from 'react-dom/test-utils';
-import error = Simulate.error;
+import { Link } from "react-router-dom";
 
-// export const BASE_URL = "https://project-tvimk.run.goorm.site";
-// const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+export const BASE_URL = "https://project-tvimk.run.goorm.site";
 
 export interface TripPlan {
   id: number;
@@ -34,10 +26,10 @@ export interface TripPlan {
   imagePath: string;
 }
 //테스트용 토근
-// const AUTH_TOKEN =
-//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6InVzZXIxIiwiZW1haWwiOiJ1c2VyMUBnbWFpbC5jb20iLCJpYXQiOjE3MzI3MDE5NzEsImV4cCI6MTczMjc4ODM3MX0.WFkr-CYxtV5SVLYx_H3OsPsIYPk6NNl_id6EcLGK5h0";
-// axios.defaults.baseURL = "https://project-tvimk.run.goorm.site/"; axios.defaults.headers.common["Authorization"] =
-// AUTH_TOKEN;
+const AUTH_TOKEN =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6InVzZXIxIiwiZW1haWwiOiJ1c2VyMUBnbWFpbC5jb20iLCJpYXQiOjE3MzI3MDE5NzEsImV4cCI6MTczMjc4ODM3MX0.WFkr-CYxtV5SVLYx_H3OsPsIYPk6NNl_id6EcLGK5h0";
+axios.defaults.baseURL = "https://project-tvimk.run.goorm.site/";
+axios.defaults.headers.common["Authorization"] = AUTH_TOKEN;
 
 const calculateDaysLeft = (startDate: string): number => {
   const today = new Date();
@@ -121,76 +113,32 @@ const NoPlanCard: React.FC = () => {
 };
 
 const Travel: React.FC = () => {
-  const { authenticated, authLoading } = useAuth();
-  const [ myTrip, setTrip ] = useState<TripPlan[]>([]);
-  const [isFetching, setIsFetching] = useState(true); // 데이터 로딩 해결
-  const [ isModalOpen, setIsModalOpen ] = useState(false);
+  const [myTrip, setTrip] = useState<TripPlan[]>([]);
   
   useEffect(() => {
-    if (authenticated) {
-      const fetchData = async () => {
-        setIsFetching(true);
-        try {
-          const res = await getTripList();
-          setTrip(res.data || []);
-        } catch (error) {
-          console.error('오류 발생:', error);
-          alert(`오류 발생: ${ error }`);
-          setTrip([]);
-        } finally {
-          setIsFetching(false);
-        }
-      };
-      fetchData();
+    try {
+      requestHandler("get", "/api/trip").then((res) => {
+        setTrip(res.data);
+      });
+    } catch (error) {
+      console.error("오류 발생:", error);
+      alert(`오류 발생: ${error}`);
     }
-  }, [ authenticated ]);
-  
-  if (authLoading || isFetching) {
-    return <CircularIndeterminate />;
-  }
-  
-  if (!authenticated) {
-    redirect('/');
-    return null;
-  }
-  // requestHandler("get", "/api/trip").then((res) => {
-  //   setTrip(res.data);
-  // });
-  // } catch (error) {
-  //   console.error("오류 발생:", error);
-  //   alert(`오류 발생: ${error}`);
-  // }
+  }, []);
 
   const handleDeleteByDB = async (id: number) => {
-    if (authenticated) {
-      try {
-        const res = await deleteTripItem(id);
-        
-        if (res.status === 200) {
-        setTrip((item) => item.filter((plan) => plan.id !== id));
+    try {
+      axios.delete(`/api/trip/${id}`).then((response) => {
+        if (response.status === 200) {
+          setTrip((prevPlans) => prevPlans.filter((plan) => plan.id !== id));
         } else {
-          throw new Error('삭제 실패');
+          throw new Error("삭제 실패");
         }
-      } catch (error) {
-        console.error('오류 발생:', error);
-      }
+      });
+    } catch (error) {
+      console.error("오류 발생:", error);
     }
-  }
-  // try {
-  //   axios.delete(`/api/trip/${id}`).then((response) => {
-  //     if (response.status === 200) {
-  //       setTrip((prevPlans) => prevPlans.filter((plan) => plan.id !== id));
-  //     } else {
-  //       throw new Error("삭제 실패");
-  //     }
-  //   });
-  // }
-  // catch (error) {
-  //   console.error("오류 발생:", error);
-  // }
-  // }
-  // }
-
+  };
 
   const numberOfPlans = myTrip.length;
 

@@ -2,8 +2,6 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import CardTravelIcon from "@mui/icons-material/CardTravel";
 import Profile from '@/components/login/Profile.tsx';
-import { signOut } from '@/components/login/auth.ts';
-import { Logout } from '@mui/icons-material';
 
 
 export default function NavBar() {
@@ -20,8 +18,8 @@ export default function NavBar() {
           
           <Profile />
 
-          {/*<LogoutButton onClick={signOut} ><Logout /></LogoutButton>*/}
-          {/*<LoginButton ><Link to="/login">로그인</Link></LoginButton>*/}
+          <LogoutButton onClick={signOut} ><Logout /></LogoutButton>
+          <LoginButton ><Link to="/login">로그인</Link></LoginButton>
           
         </LinkContainer>
       </ModifiedContainer>
