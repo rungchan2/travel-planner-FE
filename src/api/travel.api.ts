@@ -1,11 +1,17 @@
 import { requestHandler } from "./http";
-import { TripPlan } from "@/pages/TravelList";
 
 
 export const getTravelList = async () => {
   return requestHandler("get", "/api/trip");
 }
 
-export const createTravel = async (payload: TripPlan) => {
+interface CreateTravelPayload {
+  name: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+}
+
+export const createTravel = async (payload: CreateTravelPayload) => {
   return requestHandler("post", "/api/trip", payload);
 }

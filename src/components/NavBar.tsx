@@ -4,7 +4,9 @@ import CardTravelIcon from "@mui/icons-material/CardTravel";
 import {signOut} from "@/components/login/auth.ts";
 import {Logout} from "@mui/icons-material";
 
+
 export default function NavBar() {
+
   return (
     <NavBarContainer>
       <ModifiedContainer>

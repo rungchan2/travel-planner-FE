@@ -1,5 +1,6 @@
+import { requestHandler } from "@/api/http";
 import { Badge } from "@/components/ui/badge";
-import {  buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardHeader,
@@ -25,7 +26,8 @@ export interface TripPlan {
   imagePath: string;
 }
 //테스트용 토근
-const AUTH_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6InVzZXIxIiwiZW1haWwiOiJ1c2VyMUBnbWFpbC5jb20iLCJpYXQiOjE3MzI3MDE5NzEsImV4cCI6MTczMjc4ODM3MX0.WFkr-CYxtV5SVLYx_H3OsPsIYPk6NNl_id6EcLGK5h0";
+const AUTH_TOKEN =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6InVzZXIxIiwiZW1haWwiOiJ1c2VyMUBnbWFpbC5jb20iLCJpYXQiOjE3MzI3MDE5NzEsImV4cCI6MTczMjc4ODM3MX0.WFkr-CYxtV5SVLYx_H3OsPsIYPk6NNl_id6EcLGK5h0";
 axios.defaults.baseURL = "https://project-tvimk.run.goorm.site/";
 axios.defaults.headers.common["Authorization"] = AUTH_TOKEN;
 
@@ -112,19 +114,16 @@ const NoPlanCard: React.FC = () => {
 
 const Travel: React.FC = () => {
   const [myTrip, setTrip] = useState<TripPlan[]>([]);
-
-  const fetchTravelPlans = async () => {
+  
+  useEffect(() => {
     try {
-      axios.get("/api/trip").then((response) => {
-        setTrip(response.data);
+      requestHandler("get", "/api/trip").then((res) => {
+        setTrip(res.data);
       });
     } catch (error) {
       console.error("오류 발생:", error);
+      alert(`오류 발생: ${error}`);
     }
-  };
-
-  useEffect(() => {
-    fetchTravelPlans();
   }, []);
 
   const handleDeleteByDB = async (id: number) => {
@@ -141,7 +140,7 @@ const Travel: React.FC = () => {
     }
   };
 
-  const numberOfPlans = myTrip.length 
+  const numberOfPlans = myTrip.length;
 
   return (
     <div className="container mx-auto px-4 py-8">
