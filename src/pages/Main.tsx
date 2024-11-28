@@ -15,20 +15,19 @@ const MainPage: React.FC = () => {
   const { showAlert } = useAlert();
   const [name, setNameInput] = useState('');
   const [description, setDescription] = useState('');
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [startDate, setStartDate] = useState<string | null>(null);
+  const [endDate, setEndDate] = useState<string | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
-
-  const navigate = useNavigate();
   const [ isLoading, setIsLoading ] = useState(false);
+  const navigate = useNavigate();
   
   const createNewTravelPlan = async () => {
-    
     // 유효성 검사
     setIsSubmitted(true);
     if (!name || !description || !startDate || !endDate) {
       return;
     }
+    
     const tripData: ITravelPlan = {
       name,
       description,
@@ -36,24 +35,35 @@ const MainPage: React.FC = () => {
       endDate,
     };
     
+    console.log("tripData: ", tripData)
+    
     try {
       setIsLoading(true);
       const response = await sendRequest('POST', '/api/trip', tripData);
       
-      showAlert('여행이 성공적으로 생성되었습니다.');
-      navigate('/travel');
+      if (response && response.data) {
+        showAlert('여행이 성공적으로 생성되었습니다.');
+        navigate('/travel');
+      } else {
+        showAlert('여행 생성에 실패하였습니다. 다시 시도해주세요.');
+      }
       
-      setIsSubmitted(false);
-      setIsLoading(false);
+      if (response && response.status === 200) {
+        showAlert('여행이 성공적으로 생성되었습니다.');
+        setNameInput('');
+        setDescription('');
+        setStartDate(null);
+        setEndDate(null);
+        navigate('/travel');
+      }
       
       return response.data;
     } catch (error) {
       console.error(error);
       showAlert('여행 생성에 실패하였습니다. 다시 시도해주세요.');
+    } finally {
       setIsLoading(false);
-      throw error;
     }
-
   };
   
   return (
@@ -134,22 +144,18 @@ const ImgArea = styled.div`
     left: 50%;
     top: 50%;
     transform: translate(-90%, -50%);
-    z-index: 999;
+    z-index: 990;
     font-size: 2.8rem;
     font-weight: 700;
     //text-align: center;
     color: #fff;
   }
-  
 `
-
 
 const FormArea = styled.div`
     display: flex;
     flex-direction: column;
     gap: 20px;
-    
-
 `;
 
 const InputArea = styled.div`

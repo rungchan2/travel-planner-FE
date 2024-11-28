@@ -42,8 +42,8 @@ export interface IDestinationType {
 export interface ITravelPlan {
     name: string;
     description: string;
-    startDate: Date;
-    endDate: Date;
+    startDate: Date | string | null;
+    endDate: Date | string | null;
 }
 
 // export interface ITripDestination {

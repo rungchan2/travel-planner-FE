@@ -16,24 +16,39 @@ const apiClient = axios.create({
 });
 
 // current user에 토큰 전송 (auth에 토큰 전송시 사용)
-export const sendAuthRequest = async ( method: HTTPMethod, url: string ) => {
+export const sendAuthRequest = async ( method: HTTPMethod, url: string, data?: any) => {
 	const currentUser = auth.currentUser;
-	
+
 	if (!currentUser) {
 		throw new Error('잘못된 인증 경로입니다.');
 	}
-	
-	const idToken = await currentUser.getIdToken();
-	
+
+	const token = await currentUser.getIdToken();
+	console.log("토큰", token)
+
 	return apiClient({
-		method, url,
+		method, url, data,
 		headers: {
-			Authorization: `Bearer ${ idToken }`,
+			Authorization: `Bearer ${ token }`,
 		}
 	});
 };
 
+
 // trip 설정
 export const sendRequest = async (method: HTTPMethod, url: string, data?: ITravelPlan) => {
-	return apiClient({method, url, data });
+	const currentUser = auth.currentUser;
+	if (!currentUser) {
+		throw new Error('로그인이 필요합니다.');
+	}
+	const token = await currentUser.getIdToken(true);
+	
+	return apiClient({
+		method, url, data,
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	});
+
+	
 };

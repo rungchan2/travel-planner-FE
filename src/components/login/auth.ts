@@ -18,7 +18,7 @@ export const signInWithGoogle = async () => {
   try {
     await setPersistence(auth, browserSessionPersistence); // 브라우저 의존 로그인 상태 유지
     const result = await signInWithPopup(auth, provider);
-    const response = await sendAuthRequest('POST', '/api/users/fb_login');
+    const response = await sendAuthRequest('POST', '/api/users/login');
     
     if (response.status !== 200) {
       await auth.signOut();
