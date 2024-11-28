@@ -2,6 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import { useState } from "react";
 import { Button, Input } from "@mui/material";
+import { ISchedule } from "@/api/schedule.api";
+import { useSchedule } from "@/hooks/useSchedule";
+import { useLocation } from "react-router-dom";
+import { Plan } from "@/pages/TravelDetail";
+
 const ScheduleCategory = [
   {
     categoryId: "1",
@@ -30,12 +35,20 @@ const ScheduleCategory = [
 ];
 
 export default function ScheduleForm({
+  forceUpdate,
+  date,
   setIsClicked,
 }: {
+  forceUpdate: () => void;
+  date: string;
   setIsClicked: (isClicked: boolean) => void;
 }) {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [scheduleName, setScheduleName] = useState<string>("");
+  const location = useLocation();
+  const plan: Plan = location.state?.plan;
+  const { createSchedule } = useSchedule(plan.id);
+
 
   const handleBlur = (e: React.FocusEvent) => {
     if (e.currentTarget.contains(e.relatedTarget)) {
@@ -44,8 +57,26 @@ export default function ScheduleForm({
     setIsClicked(false);
   };
 
-  const handleAddSchedule = () => {
-    console.log("test", selectedCategory, scheduleName);
+  const handleAddSchedule = async () => {
+    if (selectedCategory && scheduleName) {
+      const payload: ISchedule = {
+        id: Math.random(),
+        tripId: plan.id,
+        date: 0,
+        startTime: date,
+        endTime: date,
+        description: scheduleName,
+        orderId: 0,
+        type: selectedCategory,
+      }
+      console.log("payload", payload);
+      try { 
+        await createSchedule(payload);
+        forceUpdate();
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
 
   return (

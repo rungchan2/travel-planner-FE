@@ -21,13 +21,16 @@ const MainPage: React.FC = () => {
   const navigate = useNavigate();
   
   const handleStartPlanning = async () => {
+    const payload = {
+      name: title,
+      description: location,
+      startDate: startDate?.toISOString().split("T")[0] ?? "",
+      endDate: endDate?.toISOString().split('T')[0] ?? "",
+    }
+    console.log("payload", payload);
+
     try {
-      await createTravel({
-        name: title,
-        description: location,
-        startDate: startDate?.toISOString() ?? "",
-        endDate: endDate?.toISOString() ?? "",
-      });
+      await createTravel(payload);
       navigate("/travel");
     } catch (error) {
       console.error(error);

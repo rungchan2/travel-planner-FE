@@ -17,8 +17,7 @@ export const getToken = () => {
 
 
 export const createClient = (config?: AxiosRequestConfig) => {
-  const { token, justToken } = getToken();
-  console.log("tokenzzzzzz", token);
+  const { token } = getToken();
 
   const axiosInstance = axios.create({
     baseURL: BASE_URL,
