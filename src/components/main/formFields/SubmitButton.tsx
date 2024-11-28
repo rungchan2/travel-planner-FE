@@ -4,14 +4,16 @@ import {Button} from "@mui/material";
 type TSubmitButtonProps = {
   onClick?: () => void;
   children?: string;
+  disabled: boolean;
 };
 
-const SubmitButton: React.FC<TSubmitButtonProps> = ({onClick, children}) => (
+const SubmitButton: React.FC<TSubmitButtonProps> = ({onClick, children, disabled}) => (
   <Button
     variant="contained"
     type="submit"
     sx={{width: '100%', height: '48px'}}
-    onClick={onClick} // 전달된 onClick 핸들러를 적용
+    onClick={onClick}
+    disabled={disabled}
   >
     {children}
   </Button>

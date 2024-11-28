@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import CardTravelIcon from "@mui/icons-material/CardTravel";
-import {signOut} from "@/components/login/auth.ts";
-import {Logout} from "@mui/icons-material";
+import Profile from '@/components/login/Profile.tsx';
 
 
 export default function NavBar() {
@@ -16,8 +15,12 @@ export default function NavBar() {
         </IconContainer>
         <LinkContainer>
           <NavBarItem to="/travel">Travel</NavBarItem>
+          
+          <Profile />
+
           <LogoutButton onClick={signOut} ><Logout /></LogoutButton>
           <LoginButton ><Link to="/login">로그인</Link></LoginButton>
+          
         </LinkContainer>
       </ModifiedContainer>
     </NavBarContainer>
@@ -51,6 +54,10 @@ const NavBarContainer = styled.div`
   top: 0;
   z-index: 999;
   padding: 1rem 0;
+  
+  height: 80px;
+  display: flex;
+  align-items: center;
 `;
 
 const ModifiedContainer = styled.div`

@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
 import styled from "styled-components";
 import ScheduleForm from './ScheduleForm';
+import { useState } from 'react';
 
 export default function AddSchedule() {
     const [isClicked, setIsClicked] = useState<boolean>(false);

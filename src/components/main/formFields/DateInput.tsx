@@ -7,10 +7,10 @@ import {Box, TextFieldProps} from "@mui/material";
 
 type TDateInputProps = {
   label: string;
-  value: Date | null;
-  onChange: (date: Date | null) => void;
-  minDate?: Date | null;
-  maxDate?: Date | null;
+  value: string | null;
+  onChange: (date: string | null) => void;
+  minDate?: string | null;
+  maxDate?: string | null;
   required?: boolean;
   error?: boolean;
   helperText?: string;
@@ -26,15 +26,22 @@ const DateRangeInput: FC<TDateInputProps> = ({
   error,
   helperText,
 }) => {
-
+  
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box sx={{paddingTop: 0, overflow: 'initial'}}>
         <DatePicker
-          format="YYYY/MM/DD"
+          format="YYYY-MM-DD"
           label={label}
           value={value ? dayjs(value) : null}
-          onChange={(newValue) => onChange(newValue ? newValue.toDate() : null)}
+          onChange={(newValue) => {
+            if (newValue) {
+              const formattedDate = newValue.format('YYYY-MM-DD');
+              onChange(formattedDate);
+            } else {
+              onChange(null);
+            }
+          }}
           minDate={minDate ? dayjs(minDate) : undefined}
           maxDate={maxDate ? dayjs(maxDate) : undefined}
           sx={{width: '100%'}}

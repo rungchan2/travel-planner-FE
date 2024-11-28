@@ -1,50 +1,29 @@
-import { signInWithGoogle } from "./auth";
-import { Modal, Box, Button, Typography } from "@mui/material";
-import { Google } from "@mui/icons-material";
+import {signInWithGoogle} from '../login/auth.ts';
+import { Button, Typography } from '@mui/material';
+import {Google} from "@mui/icons-material";
+import ModalComponent from '@/components/Modal.tsx';
+
 const GoogleLoginModal = () => {
-  const handleLogin = () => {
-    signInWithGoogle().catch((error) => {
-      console.error("로그인 오류:", error);
-    });
+  
+  const handleLogin = async () => {
+    try {
+      await signInWithGoogle();
+      
+    } catch (error) {
+      console.error('로그인 실패: ', error);
+      alert('로그인 중 오류가 발생했습니다. 다시 시도해 주세요.');
+    }
   };
 
   return (
-    <Modal open={true}>
-      <Box
-        sx={{
-          position: "absolute",
-          width: "400px",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          backgroundColor: "background.paper",
-          padding: 4,
-          boxShadow: 24,
-          borderRadius: 2,
-          display: "flex",
-          flexDirection: "column",
-          gap: 3,
-          textAlign: "center",
-          border: "none",
-          outline: "none",
-        }}
-      >
-        <Typography
-          variant="h4"
-          component="h2"
-          sx={{ wordBreak: "keep-all", fontWeight: 600 }}
-        >
+    <ModalComponent open={true}>
+        <h4>
           로그인
-        </Typography>
-        <Typography
-          variant="body1"
-          component="span"
-          sx={{ lineHeight: 1.4, wordBreak: "keep-all", color: "#828282" }}
-        >
-          여행플래너를 시작하기 위해
-          <br />
+        </h4>
+        <p>
+          여행플래너를 시작하기 위해<br/>
           구글 로그인이 필요합니다.
-        </Typography>
+        </p>
         <Button
           variant="contained"
           color="primary"
@@ -62,8 +41,7 @@ const GoogleLoginModal = () => {
             Google 계정으로 시작하기
           </Typography>
         </Button>
-      </Box>
-    </Modal>
+    </ModalComponent>
   );
 };
 

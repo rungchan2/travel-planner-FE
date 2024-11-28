@@ -1,11 +1,11 @@
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
-import {Provider} from "react-redux";
-import store from "./store (삭제예정)";
+import {ThemeProvider} from "@mui/material";
+import {globalTheme} from "@/styles/globalTheme.tsx";
 
 createRoot(document.getElementById('root')!).render(
-  <Provider store={store}>
+  <ThemeProvider theme={globalTheme}>
     <App />
-  </Provider>
+  </ThemeProvider>
 )
