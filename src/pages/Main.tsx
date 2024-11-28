@@ -1,74 +1,58 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import DateRangeInput from "@/components/formFields/DateInput.tsx";
-import SubmitButton from "@/components/formFields/SubmitButton.tsx";
-import TextInput from "@/components/formFields/TextInput.tsx";
+import DateRangeInput from '../components/main/formFields/DateInput.tsx';
+import SubmitButton from '../components/main/formFields/SubmitButton.tsx';
+import TextInput from '@/components/main/formFields/TextInput.tsx';
 import { Typography } from "@mui/material";
-import { createTravel } from "@/api/travel.api";
-import { sendRequest } from '@/components/api/api.ts';
+// import { createTrip } from '@/components/api/api.ts';
 import { ITravelPlan } from '@/type';
 import ImgAutoSlide from '@/components/main/ImgAutoSlide.tsx';
 import { slides } from '@/components/main/ImgFile.tsx';
+import { createTravel } from '@/api/travel.api.ts';
+import { LoginPayload } from '@/api/auth.api.ts';
+import useTrip from '@/hooks/useTrip.ts';
 
 const MainPage: React.FC = () => {
-    const [name, setNameInput] = useState('');
+  const [name, setNameInput] = useState('');
   const [description, setDescription] = useState('');
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [ isLoading, setIsLoading ] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   
   const handleStartPlanning = async () => {
-    try {
-      await createTravel({
-        name: title,
-        description: location,
-        startDate: startDate?.toISOString() ?? "",
-        endDate: endDate?.toISOString() ?? "",
-      });
-      navigate("/travel");
-    } catch (error) {
-      console.error(error);
-      return;
+    const payload = {
+      name: name,
+      description: description,
+      startDate: startDate,
+      endDate: endDate,
     }
-
+    console.log("payload", payload);
+    
     setIsSubmitted(true);
     if (!name || !description || !startDate || !endDate) {
       return;
     }
-
-    const tripData: ITravelPlan = {
-      name,
-      description,
-      startDate,
-      endDate,
-    };
-    
-    console.log("tripData: ", tripData)
     
     try {
       setIsLoading(true);
-      const response = await sendRequest('POST', '/api/trip', tripData);
+      const response = await createTravel(payload);
       
-      if (response && response.data) {
-        alert('여행이 성공적으로 생성되었습니다.');
-        navigate('/travel');
-      } else {
-        alert('여행 생성에 실패하였습니다. 다시 시도해주세요.');
-      }
-      
-      if (response && response.status === 200) {
+      if (response) {
         alert('여행이 성공적으로 생성되었습니다.');
         setNameInput('');
         setDescription('');
         setStartDate(null);
         setEndDate(null);
-        navigate('/travel');
+        navigate('/travel/detail');
+      } else {
+        alert('여행 생성에 실패하였습니다. 다시 시도해주세요.');
       }
       
-      return response.data;
+      return response;
+      
     } catch (error) {
       console.error(error);
       alert('여행 생성에 실패하였습니다. 다시 시도해주세요.');
@@ -109,7 +93,7 @@ const MainPage: React.FC = () => {
           <DateRangeInput
             label="시작일"
             value={startDate}
-            onChange={(newDate) => setStartDate(newDate)}
+            onChange={(newDate: string | null) => setStartDate(newDate)}
             maxDate={endDate}
             required={true}
             error={isSubmitted && !startDate}
@@ -118,7 +102,7 @@ const MainPage: React.FC = () => {
           <DateRangeInput
             label="종료일"
             value={endDate}
-            onChange={(newDate) => setEndDate(newDate)}
+            onChange={(newDate: string | null) => setEndDate(newDate)}
             minDate={startDate}
             required={true}
             error={isSubmitted && !endDate}
@@ -126,7 +110,7 @@ const MainPage: React.FC = () => {
           />
 
         </InputArea>
-        <SubmitButton onClick={ createNewTravelPlan } disabled={ isLoading }>
+        <SubmitButton onClick={ handleStartPlanning } disabled={ isLoading }>
           { isLoading ? '제출 중...' : '여행 시작하기' }
         </SubmitButton>
       </FormArea>

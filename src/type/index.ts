@@ -16,13 +16,6 @@ export interface IUser {
     userEmail: string;
 }
 
-export interface ISchedule {
-    scheduleId: string;
-    tripId: string;
-    date: string;
-    description: string;
-}
-
 export interface IDestination {
     destinationId: string;
     destinationTypeId: string;
@@ -42,8 +35,8 @@ export interface IDestinationType {
 export interface ITravelPlan {
     name: string;
     description: string;
-    startDate: Date | string | null;
-    endDate: Date | string | null;
+    startDate: string | null;
+    endDate: string | null;
 }
 
 // export interface ITripDestination {

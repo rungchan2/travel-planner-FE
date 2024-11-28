@@ -8,7 +8,8 @@ interface AuthContextProps {
   displayName: string | null;
   email: string | null;
   photoURL: string | null;
-  loading: boolean;
+  authLoading: boolean;
+  authenticated: boolean;
 }
 
 export const AuthContext = createContext<AuthContextProps>({
@@ -16,7 +17,8 @@ export const AuthContext = createContext<AuthContextProps>({
   displayName: null,
   email: null,
   photoURL: null,
-  loading: true,
+  authLoading: true,
+  authenticated: false,
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -24,27 +26,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [displayName, setDisplayName] = useState<string | null>(null);
   const [email, setEmail] = useState<string | null>(null);
   const [photoURL, setPhotoURL] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [authLoading, setAuthLoading] = useState<boolean>(true);
+  const [ authenticated, setAuthenticated ] = useState(false);
   
   
   useEffect(() => {
     const auth = getAuth(app);
     // 인증 상태 변경 감지
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
       
       if (currentUser) {
-      setDisplayName(currentUser.displayName);
-      setEmail(currentUser.email);
-      setPhotoURL(currentUser.photoURL);
+        setUser(currentUser);
+        setAuthenticated(true);
+        setDisplayName(currentUser.displayName);
+        setEmail(currentUser.email);
+        setPhotoURL(currentUser.photoURL);
       } else {
+        setUser(null);
+        setAuthenticated(false);
         setDisplayName(null);
         setEmail(null);
         setPhotoURL(null);
       }
-      setLoading(false);
+      setAuthLoading(false);
       
-// >>>>>>> develop
       localStorage.setItem("google-infos", JSON.stringify(currentUser));
     });
     
@@ -55,9 +60,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
   
   return (
-    <AuthContext.Provider value={{ user, displayName, email, photoURL, loading }}>
+    <AuthContext.Provider value={{ user, authenticated, displayName, email, photoURL, authLoading }}>
       {children}
-      {!user && !loading && <GoogleLoginModal />}
+      {!user && !authLoading && <GoogleLoginModal />}
     </AuthContext.Provider>
   );
 };

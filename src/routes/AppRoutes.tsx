@@ -15,8 +15,8 @@ const AppRoutes: React.FC = () => {
         <Route path="/" element={<Main/>}/>
         <Route path="/travel" element={<TravelList/>}/>
         <Route path="/travel/detail" element={<TravelDetail props={null} />}/>
-        <Route path="/login" element={<Login/>}/>
-        <Route path="/signup" element={<Signup/>}/>
+        {/*<Route path="/login" element={<Login/>}/>*/}
+        {/*<Route path="/signup" element={<Signup/>}/>*/}
 
         {/*404 페이지*/}
         <Route path="*" element={<NotFoundPage/>}/>
