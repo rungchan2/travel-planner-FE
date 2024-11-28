@@ -1,50 +1,31 @@
-import { ISchedule } from "../type";
 import SingleSchedule from "./SingleSchedule";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import dayjs from "dayjs";
-import React from "react";
 import { useState } from "react";
 import { styled } from "styled-components";
 import "dayjs/locale/ko";
 //한국어
 import AddSchedule from "./AddSchedule";
 import { Droppable } from "react-beautiful-dnd";
+import { useReducer } from "react";
+import { useSchedule } from "@/hooks/useSchedule";
+import { useLocation } from "react-router-dom";
+import { Plan } from "@/pages/TravelDetail";
 
 dayjs.locale("ko");
 
-const listOfSchedules: ISchedule[] = [
-  {
-    scheduleId: "1",
-    tripId: "1",
-    date: "2024-05-01",
-    description: "출발",
-  },
-  {
-    scheduleId: "2",
-    tripId: "1",
-    date: "2024-05-01",
-    description: "도착",
-  },
-  {
-    scheduleId: "3",
-    tripId: "1",
-    date: "2024-05-03",
-    description: "해수욕장",
-  },
-  {
-    scheduleId: "4",
-    tripId: "1",
-    date: "2024-05-02",
-    description: "쇼핑",
-  },
-];
 
 export default function SingleDay({ date }: { date: string }) {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+  const plan: Plan = location.state?.plan;
+  const { scheduleList } = useSchedule(plan.id);
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
 
-  const filteredSchedules = listOfSchedules.filter(
-    (data) => data.date === date
+
+  const filteredSchedules = scheduleList.filter(
+    (data) => data.startTime === date
   );
   return (
     <Droppable droppableId={date}>
@@ -60,10 +41,10 @@ export default function SingleDay({ date }: { date: string }) {
           <div className="after">
             {isOpen &&
               filteredSchedules.map((data, index) => (
-                <SingleSchedule key={index} data={data} index={index} />
+                <SingleSchedule key={data.id} data={data} index={index} />
               ))}
           </div>
-          {isOpen ? <AddSchedule /> : null}
+          {isOpen ? <AddSchedule forceUpdate={forceUpdate} date={date}/> : null}
         </SingleDayContainer>
       )}
     </Droppable>

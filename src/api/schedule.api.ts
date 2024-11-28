@@ -10,7 +10,8 @@ import { requestHandler } from "./http";
 //   type: "식당",
 // };
 
-export interface Schedule {
+export interface ISchedule {
+  id: number;
   tripId: number;
   date: number;
   startTime: string;
@@ -21,14 +22,17 @@ export interface Schedule {
 }
 
 export interface ScheduleList {
-  schedules: Schedule[];
+  schedules: ISchedule[];
 }
 
 export const createScheduleList = async (payload: ScheduleList) => {
-  return requestHandler("post", "/api/scheule", payload);
+  return requestHandler("post", "/api/schedule", payload);
 };
 
 export const getScheduleList = async (tripId: number) => {
-  return requestHandler("get", `/api/scheule/${tripId}`);
+  return requestHandler("get", `/api/schedule/${tripId}`);
 };
 
+export const deleteScheduleList = async (scheduleId: number) => {
+  return requestHandler("delete", `/api/schedule/${scheduleId}`);
+};

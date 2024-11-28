@@ -26,10 +26,10 @@ export interface TripPlan {
   imagePath: string;
 }
 //테스트용 토근
-const AUTH_TOKEN =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6InVzZXIxIiwiZW1haWwiOiJ1c2VyMUBnbWFpbC5jb20iLCJpYXQiOjE3MzI3MDE5NzEsImV4cCI6MTczMjc4ODM3MX0.WFkr-CYxtV5SVLYx_H3OsPsIYPk6NNl_id6EcLGK5h0";
-axios.defaults.baseURL = "https://project-tvimk.run.goorm.site/";
-axios.defaults.headers.common["Authorization"] = AUTH_TOKEN;
+// const AUTH_TOKEN =
+//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6InVzZXIxIiwiZW1haWwiOiJ1c2VyMUBnbWFpbC5jb20iLCJpYXQiOjE3MzI3MDE5NzEsImV4cCI6MTczMjc4ODM3MX0.WFkr-CYxtV5SVLYx_H3OsPsIYPk6NNl_id6EcLGK5h0";
+// axios.defaults.baseURL = "https://project-tvimk.run.goorm.site/";
+// axios.defaults.headers.common["Authorization"] = AUTH_TOKEN;
 
 const calculateDaysLeft = (startDate: string): number => {
   const today = new Date();
@@ -118,7 +118,7 @@ const Travel: React.FC = () => {
   useEffect(() => {
     try {
       requestHandler("get", "/api/trip").then((res) => {
-        setTrip(res.data);
+        setTrip(res);
       });
     } catch (error) {
       console.error("오류 발생:", error);
