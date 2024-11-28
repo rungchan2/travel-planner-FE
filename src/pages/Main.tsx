@@ -7,12 +7,10 @@ import TextInput from '@/components/main/formFields/TextInput.tsx';
 import {Typography} from "@mui/material";
 import { sendRequest } from '@/components/api/api.ts';
 import { ITravelPlan } from '@/type';
-import { useAlert } from '@/hooks/useAlert.ts';
 import ImgAutoSlide from '@/components/main/ImgAutoSlide.tsx';
 import { slides } from '@/components/main/ImgFile.tsx';
 
 const MainPage: React.FC = () => {
-  const { showAlert } = useAlert();
   const [name, setNameInput] = useState('');
   const [description, setDescription] = useState('');
   const [startDate, setStartDate] = useState<string | null>(null);
@@ -42,14 +40,14 @@ const MainPage: React.FC = () => {
       const response = await sendRequest('POST', '/api/trip', tripData);
       
       if (response && response.data) {
-        showAlert('여행이 성공적으로 생성되었습니다.');
+        alert('여행이 성공적으로 생성되었습니다.');
         navigate('/travel');
       } else {
-        showAlert('여행 생성에 실패하였습니다. 다시 시도해주세요.');
+        alert('여행 생성에 실패하였습니다. 다시 시도해주세요.');
       }
       
       if (response && response.status === 200) {
-        showAlert('여행이 성공적으로 생성되었습니다.');
+        alert('여행이 성공적으로 생성되었습니다.');
         setNameInput('');
         setDescription('');
         setStartDate(null);
@@ -60,7 +58,7 @@ const MainPage: React.FC = () => {
       return response.data;
     } catch (error) {
       console.error(error);
-      showAlert('여행 생성에 실패하였습니다. 다시 시도해주세요.');
+      alert('여행 생성에 실패하였습니다. 다시 시도해주세요.');
     } finally {
       setIsLoading(false);
     }
