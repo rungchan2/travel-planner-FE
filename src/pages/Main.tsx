@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
-import {useNavigate} from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import DateRangeInput from '@/components/main/formFields/DateInput.tsx';
-import SubmitButton from '@/components/main/formFields/SubmitButton.tsx';
-import TextInput from '@/components/main/formFields/TextInput.tsx';
-import {Typography} from "@mui/material";
+import DateRangeInput from "@/components/formFields/DateInput.tsx";
+import SubmitButton from "@/components/formFields/SubmitButton.tsx";
+import TextInput from "@/components/formFields/TextInput.tsx";
+import { Typography } from "@mui/material";
+import { createTravel } from "@/api/travel.api";
 import { sendRequest } from '@/components/api/api.ts';
 import { ITravelPlan } from '@/type';
 import ImgAutoSlide from '@/components/main/ImgAutoSlide.tsx';
 import { slides } from '@/components/main/ImgFile.tsx';
 
 const MainPage: React.FC = () => {
-  const [name, setNameInput] = useState('');
+    const [name, setNameInput] = useState('');
   const [description, setDescription] = useState('');
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
@@ -19,13 +20,25 @@ const MainPage: React.FC = () => {
   const [ isLoading, setIsLoading ] = useState(false);
   const navigate = useNavigate();
   
-  const createNewTravelPlan = async () => {
-    // 유효성 검사
+  const handleStartPlanning = async () => {
+    try {
+      await createTravel({
+        name: title,
+        description: location,
+        startDate: startDate?.toISOString() ?? "",
+        endDate: endDate?.toISOString() ?? "",
+      });
+      navigate("/travel");
+    } catch (error) {
+      console.error(error);
+      return;
+    }
+
     setIsSubmitted(true);
     if (!name || !description || !startDate || !endDate) {
       return;
     }
-    
+
     const tripData: ITravelPlan = {
       name,
       description,
@@ -117,8 +130,6 @@ const MainPage: React.FC = () => {
           { isLoading ? '제출 중...' : '여행 시작하기' }
         </SubmitButton>
       </FormArea>
-      
-    
     </Contents>
   );
 };
@@ -157,9 +168,9 @@ const FormArea = styled.div`
 `;
 
 const InputArea = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `;
 
 export default MainPage;

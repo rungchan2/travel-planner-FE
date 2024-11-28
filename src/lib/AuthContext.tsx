@@ -44,7 +44,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       setLoading(false);
       
+// >>>>>>> develop
+      localStorage.setItem("google-infos", JSON.stringify(currentUser));
     });
+    
 
     return () => {
       unsubscribe();

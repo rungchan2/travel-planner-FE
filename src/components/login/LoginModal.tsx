@@ -29,15 +29,17 @@ const GoogleLoginModal = () => {
           color="primary"
           onClick={handleLogin}
           sx={{
-            display: 'flex',
+            display: "flex",
             gap: 2,
             height: 50,
-            width: '100%',
-            alignItems: 'center',
+            width: "100%",
+            alignItems: "center",
           }}
         >
-          <Google fontSize="medium"/>
-          <Typography variant='body2' component='span'>Google 계정으로 시작하기</Typography>
+          <Google fontSize="medium" />
+          <Typography variant="body2" component="span">
+            Google 계정으로 시작하기
+          </Typography>
         </Button>
     </ModalComponent>
   );

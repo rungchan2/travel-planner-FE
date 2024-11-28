@@ -3,8 +3,9 @@ import styled from "styled-components";
 import CardTravelIcon from "@mui/icons-material/CardTravel";
 import Profile from '@/components/login/Profile.tsx';
 
+
 export default function NavBar() {
-  
+
   return (
     <NavBarContainer>
       <ModifiedContainer>
@@ -14,12 +15,37 @@ export default function NavBar() {
         </IconContainer>
         <LinkContainer>
           <NavBarItem to="/travel">Travel</NavBarItem>
+          
           <Profile />
+
+          <LogoutButton onClick={signOut} ><Logout /></LogoutButton>
+          <LoginButton ><Link to="/login">로그인</Link></LoginButton>
+          
         </LinkContainer>
       </ModifiedContainer>
     </NavBarContainer>
   );
 }
+
+const LoginButton = styled.a`
+    padding: 0.5rem 1rem;
+    color: #333;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+`;
+
+const LogoutButton = styled.a`
+    padding: 0.5rem 1rem;
+    color: #333;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    
+    &:hover {
+        text-decoration: none;
+        color: #007bff;
+        transform: translateY(-2px);
+    }
+`
 
 const NavBarContainer = styled.div`
   background-color: #eee;
