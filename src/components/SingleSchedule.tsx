@@ -1,7 +1,11 @@
-import { ISchedule } from "../type";
+import { ISchedule } from "@/api/schedule.api";
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { styled } from "styled-components";
+import CloseIcon from '@mui/icons-material/Close';
+import { useSchedule } from "@/hooks/useSchedule";
+import { useLocation } from "react-router-dom";
+import { Plan } from "@/pages/TravelDetail";
 
 interface SingleScheduleProps {
   data: ISchedule;
@@ -9,8 +13,16 @@ interface SingleScheduleProps {
 }
 
 const SingleSchedule: React.FC<SingleScheduleProps> = ({ data, index }) => {
+  const location = useLocation();
+  const plan: Plan = location.state?.plan;
+  const { deleteSchedule } = useSchedule(plan.id);
+  
+  const handleDelete = () => {
+    deleteSchedule(data.id);
+  }
+  
   return (
-    <Draggable draggableId={data.scheduleId} index={index}>
+    <Draggable draggableId={data.id.toString()} index={index}>
       {(provided) => (
         <ScheduleContainer
           ref={provided.innerRef}
@@ -25,11 +37,14 @@ const SingleSchedule: React.FC<SingleScheduleProps> = ({ data, index }) => {
               <TagWrapper>
                 <Tag>식당</Tag>
               </TagWrapper>
-              <Description>{data.description}</Description>
+              <Description>{ data.description }</Description>
             </InfoWrapper>
+            <div className="close-icon" onClick={ handleDelete }>
+              <CloseIcon />
+            </div>
           </ContentColumn>
         </ScheduleContainer>
-      )}
+      ) }
     </Draggable>
   );
 };
@@ -50,6 +65,14 @@ const ScheduleContainer = styled.div`
     cursor: pointer;
     transition: background 0.3s ease;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .close-icon {
+    cursor: pointer;
+    &:hover {
+      background: #f9fafb;
+      transition: background 0.3s ease;
+    }
   }
 `;
 

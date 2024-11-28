@@ -1,4 +1,5 @@
 import { requestHandler } from "./http";
+import { requestHandlerFB } from '@/api/fb_http.ts';
 
 // const data = {
 //   tripId: 25,
@@ -10,8 +11,8 @@ import { requestHandler } from "./http";
 //   type: "식당",
 // };
 
-export interface Schedule {
-  tripId: number;
+export interface ISchedule {
+  id: number;
   date: number;
   startTime: string;
   endTime: string;
@@ -21,14 +22,17 @@ export interface Schedule {
 }
 
 export interface ScheduleList {
-  schedules: Schedule[];
+  schedules: ISchedule[];
 }
 
 export const createScheduleList = async (payload: ScheduleList) => {
-  return requestHandler("post", "/api/scheule", payload);
+  return requestHandlerFB("post", "/api/schedule", payload);
 };
 
 export const getScheduleList = async (tripId: number) => {
-  return requestHandler("get", `/api/scheule/${tripId}`);
+  return requestHandlerFB("get", `/api/schedule/${tripId}`);
 };
 
+export const deleteScheduleList = async (scheduleId: number) => {
+  return requestHandler("delete", `/api/schedule/${scheduleId}`);
+};
