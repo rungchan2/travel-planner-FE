@@ -34,5 +34,5 @@ export const getScheduleList = async (tripId: number) => {
 };
 
 export const deleteScheduleList = async (scheduleId: number) => {
-  return requestHandler("delete", `/api/schedule/${scheduleId}`);
+  return requestHandlerFB("delete", `/api/schedule/${scheduleId}`);
 };

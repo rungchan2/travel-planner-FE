@@ -43,8 +43,8 @@ export default function ScheduleForm({
   date: string;
   setIsClicked: (isClicked: boolean) => void;
 }) {
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
-  const [scheduleName, setScheduleName] = useState<string>("");
+  const [ selectedCategory, setSelectedCategory ] = useState<string>("");
+  const [ scheduleName, setScheduleName ] = useState<string>("");
   const location = useLocation();
   const plan: Plan = location.state?.plan;
   const { createSchedule } = useSchedule(plan.id);
@@ -76,35 +76,36 @@ export default function ScheduleForm({
         console.log(error);
       }
     }
-
-  return (
-    <ScheduleCategoryContainer onBlur={handleBlur} tabIndex={0}>
-      {ScheduleCategory.map((category) => (
-        <ScheduleCategoryItem
-          key={category.categoryId}
-          className={selectedCategory === category.categoryId ? "selected" : ""}
-          onClick={() => setSelectedCategory(category.categoryId)}
-        >
-          {category.categoryName}
-        </ScheduleCategoryItem>
-      ))}
-      {selectedCategory && (
-        <div className="schedule-form">
-          <Input
-            className="schedule-form-input"
-            value={scheduleName}
-            placeholder="일정 이름"
-            autoFocus
-            onChange={(e) => setScheduleName(e.target.value)}
-            required
-          />
-          <Button variant="contained" onClick={handleAddSchedule}>
-            일정 추가
-          </Button>
-        </div>
-      )}
-    </ScheduleCategoryContainer>
-  );
+    
+    return (
+      <ScheduleCategoryContainer onBlur={ handleBlur } tabIndex={ 0 }>
+        { ScheduleCategory.map((category) => (
+          <ScheduleCategoryItem
+            key={ category.categoryId }
+            className={ selectedCategory === category.categoryId ? "selected" : "" }
+            onClick={ () => setSelectedCategory(category.categoryId) }
+          >
+            { category.categoryName }
+          </ScheduleCategoryItem>
+        )) }
+        { selectedCategory && (
+          <div className="schedule-form">
+            <Input
+              className="schedule-form-input"
+              value={ scheduleName }
+              placeholder="일정 이름"
+              autoFocus
+              onChange={ (e) => setScheduleName(e.target.value) }
+              required
+            />
+            <Button variant="contained" onClick={ handleAddSchedule }>
+              일정 추가
+            </Button>
+          </div>
+        ) }
+      </ScheduleCategoryContainer>
+    );
+  }
 }
 
 const ScheduleCategoryContainer = styled.div`

@@ -1,7 +1,7 @@
 import "./App.css";
 import NavBar from "./components/NavBar";
 import {BrowserRouter} from "react-router-dom";
-import {AuthProvider} from "@/lib/AuthContext.tsx";
+import AuthProvider from '@/lib/AuthProvider'; // 수정된 경로
 import AppRoutes from "@/routes/AppRoutes.tsx";
 
 function App() {

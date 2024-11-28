@@ -5,11 +5,11 @@ import { app } from '@/lib/firebaseConfig.ts';
 const auth = getAuth(app);
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-const DEFAULT_TIMEOUT = 30000;
+// const DEFAULT_TIMEOUT = 30000;
 
 const apiClient = axios.create({
 	baseURL: API_BASE_URL,
-	timeout: DEFAULT_TIMEOUT,
+	// timeout: DEFAULT_TIMEOUT,
 	headers: {
 		'Content-Type': 'application/json',
 	},
@@ -19,11 +19,14 @@ const apiClient = axios.create({
 apiClient.interceptors.request.use(
 	async (config) => {
 		const currentUser = auth.currentUser;
+		
 		if (!currentUser) {
 			throw new Error('로그인이 필요합니다.');
 		}
+		
 		const token = await currentUser.getIdToken();
 		config.headers.Authorization = `Bearer ${ token }`;
+		
 		return config;
 	},
 	(error) => {

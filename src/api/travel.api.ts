@@ -1,19 +1,21 @@
-import { requestHandler } from "./http";
-import { ITravelPlan } from '@/type';
 import { requestHandlerFB } from '@/api/fb_http.ts';
 
 
 export const getTravelList = async () => {
-  return requestHandler("get", "/api/trip");
+  return requestHandlerFB('get', '/api/trip');
 }
 
-export interface CreateTravelPayload {
+export interface createTravelItemPayload {
   name: string;
   description: string;
   startDate: string | null;
   endDate: string | null;
 }
 
-export const createTravel = async (payload: CreateTravelPayload) => {
-  return requestHandlerFB("post", "/api/trip", payload);
+export const createTravelItem = async (payload: createTravelItemPayload) => {
+  return requestHandlerFB('post', '/api/trip', payload);
 }
+
+export const deleteTravelItem = async (id: number) => {
+  return requestHandlerFB('delete', `/api/trip/${ id }`);
+};

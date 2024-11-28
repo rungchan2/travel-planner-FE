@@ -9,7 +9,7 @@ import { Typography } from "@mui/material";
 import { ITravelPlan } from '@/type';
 import ImgAutoSlide from '@/components/main/ImgAutoSlide.tsx';
 import { slides } from '@/components/main/ImgFile.tsx';
-import { createTravel } from '@/api/travel.api.ts';
+import { createTravelItem } from '@/api/travel.api.ts';
 import { LoginPayload } from '@/api/auth.api.ts';
 import useTrip from '@/hooks/useTrip.ts';
 
@@ -38,7 +38,7 @@ const MainPage: React.FC = () => {
     
     try {
       setIsLoading(true);
-      const response = await createTravel(payload);
+      const response = await createTravelItem(payload);
       
       if (response) {
         alert('여행이 성공적으로 생성되었습니다.');
