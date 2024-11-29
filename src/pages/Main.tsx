@@ -6,12 +6,9 @@ import SubmitButton from '../components/main/formFields/SubmitButton.tsx';
 import TextInput from '@/components/main/formFields/TextInput.tsx';
 import { Typography } from "@mui/material";
 // import { createTrip } from '@/components/api/api.ts';
-import { ITravelPlan } from '@/type';
 import ImgAutoSlide from '@/components/main/ImgAutoSlide.tsx';
 import { slides } from '@/components/main/ImgFile.tsx';
 import { createTravelItem } from '@/api/travel.api.ts';
-import { LoginPayload } from '@/api/auth.api.ts';
-import useTrip from '@/hooks/useTrip.ts';
 
 const MainPage: React.FC = () => {
   const [name, setNameInput] = useState('');
