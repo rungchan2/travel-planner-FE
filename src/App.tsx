@@ -9,9 +9,9 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter future={ { v7_startTransition: true } }>
-          <NavBar />
+        <NavBar />
         <AppRoutes />
-        </BrowserRouter>
+      </BrowserRouter>
     </AuthProvider>
   );
 }
