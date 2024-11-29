@@ -5,8 +5,8 @@ import TravelList from "../pages/TravelList.tsx";
 import TravelDetail from "../pages/TravelDetail";
 import Container from "@/components/Container.tsx";
 import NotFoundPage from "@/pages/NotFoundPage.tsx";
-import Login from "@/pages/Login.tsx";
-import Signup from "@/pages/Signup.tsx";
+// import Login from "@/pages/Login.tsx";
+// import Signup from "@/pages/Signup.tsx";
 const AppRoutes: React.FC = () => {
 
   return (
