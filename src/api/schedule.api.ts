@@ -1,5 +1,4 @@
-import { requestHandler } from "./http";
-import { requestHandlerFB } from '@/api/fb_http.ts';
+import { requestHandlerFB } from "./fb_http.ts";
 
 // const data = {
 //   tripId: 25,
@@ -13,6 +12,7 @@ import { requestHandlerFB } from '@/api/fb_http.ts';
 
 export interface ISchedule {
   id: number;
+  tripId: number;
   date: number;
   startTime: string;
   endTime: string;

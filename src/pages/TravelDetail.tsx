@@ -24,7 +24,6 @@ export default function TravelDetail() {
     return <>데이터가 없습니다.</>;
   }
 
-
   const dayCount =
     dayjs(plan.endDate).diff(dayjs(plan.startDate), "day") + 1;
 

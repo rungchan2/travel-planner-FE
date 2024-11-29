@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
 import GoogleLoginModal from '@/components/login/LoginModal.tsx';
 import { app } from '@/lib/firebaseConfig.ts';
-import { AuthContext } from './AuthContext'; // 수정된 부분
+import { AuthContext } from './AuthContext';
+import CircularIndeterminate from '@/components/LoadingIcon.tsx'; // 수정된 부분
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 	const [user, setUser] = useState<User | null>(null);
@@ -41,6 +42,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 		<AuthContext.Provider value={{ user, authenticated, displayName, email, photoURL, authLoading }}>
 			{children}
 			{!user && !authLoading && <GoogleLoginModal />}
+			{authLoading && <CircularIndeterminate />}
 		</AuthContext.Provider>
 	);
 };

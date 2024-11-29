@@ -2,10 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import { useState } from "react";
 import { Button, Input } from "@mui/material";
-import { ISchedule } from '@/api/schedule.api';
-import { useSchedule } from '@/hooks/useSchedule';
-import { useLocation } from 'react-router-dom';
-import { Plan } from '@/pages/TravelDetail';
+import { ISchedule } from "@/api/schedule.api";
+import { useSchedule } from "@/hooks/useSchedule";
+import { useLocation } from "react-router-dom";
+import { Plan } from "@/pages/TravelDetail";
 
 const ScheduleCategory = [
   {
@@ -43,11 +43,12 @@ export default function ScheduleForm({
   date: string;
   setIsClicked: (isClicked: boolean) => void;
 }) {
-  const [ selectedCategory, setSelectedCategory ] = useState<string>("");
-  const [ scheduleName, setScheduleName ] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [scheduleName, setScheduleName] = useState<string>("");
   const location = useLocation();
   const plan: Plan = location.state?.plan;
   const { createSchedule } = useSchedule(plan.id);
+  
   
   const handleBlur = (e: React.FocusEvent) => {
     if (e.currentTarget.contains(e.relatedTarget)) {
@@ -76,36 +77,36 @@ export default function ScheduleForm({
         console.log(error);
       }
     }
-    
-    return (
-      <ScheduleCategoryContainer onBlur={ handleBlur } tabIndex={ 0 }>
-        { ScheduleCategory.map((category) => (
-          <ScheduleCategoryItem
-            key={ category.categoryId }
-            className={ selectedCategory === category.categoryId ? "selected" : "" }
-            onClick={ () => setSelectedCategory(category.categoryId) }
-          >
-            { category.categoryName }
-          </ScheduleCategoryItem>
-        )) }
-        { selectedCategory && (
-          <div className="schedule-form">
-            <Input
-              className="schedule-form-input"
-              value={ scheduleName }
-              placeholder="일정 이름"
-              autoFocus
-              onChange={ (e) => setScheduleName(e.target.value) }
-              required
-            />
-            <Button variant="contained" onClick={ handleAddSchedule }>
-              일정 추가
-            </Button>
-          </div>
-        ) }
-      </ScheduleCategoryContainer>
-    );
-  }
+  };
+  
+  return (
+    <ScheduleCategoryContainer onBlur={handleBlur} tabIndex={0}>
+      {ScheduleCategory.map((category) => (
+        <ScheduleCategoryItem
+          key={category.categoryId}
+          className={selectedCategory === category.categoryId ? "selected" : ""}
+          onClick={() => setSelectedCategory(category.categoryId)}
+        >
+          {category.categoryName}
+        </ScheduleCategoryItem>
+      ))}
+      {selectedCategory && (
+        <div className="schedule-form">
+          <Input
+            className="schedule-form-input"
+            value={scheduleName}
+            placeholder="일정 이름"
+            autoFocus
+            onChange={(e) => setScheduleName(e.target.value)}
+            required
+          />
+          <Button variant="contained" onClick={handleAddSchedule}>
+            일정 추가
+          </Button>
+        </div>
+      )}
+    </ScheduleCategoryContainer>
+  );
 }
 
 const ScheduleCategoryContainer = styled.div`
@@ -113,14 +114,14 @@ const ScheduleCategoryContainer = styled.div`
   flex: 1;
   justify-content: space-between;
   flex-wrap: wrap;
-
+  
   .schedule-form {
     width: 100%;
     padding: 24px 16px;
     display: flex;
     flex-direction: column;
     gap: 16px;
-
+    
     .schedule-form-input {
       width: 100%;
     }
@@ -132,7 +133,7 @@ const ScheduleCategoryItem = styled.div`
   padding: 8px 12px;
   border-radius: 12px;
   background: #f5f5f5;
-
+  
   &.selected {
     background: var(--primary-color);
     color: #fff;
@@ -140,7 +141,7 @@ const ScheduleCategoryItem = styled.div`
   &.selected:hover {
     background: var(--primary-color);
   }
-
+  
   &:hover {
     cursor: pointer;
     background: #f9fafb;

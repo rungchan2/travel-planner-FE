@@ -1,19 +1,16 @@
-import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import {
   Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
   CardContent,
 } from "@/components/ui/card";
-import { PlusCircle, X } from "lucide-react";
+import { PlusCircle } from 'lucide-react';
 import React from 'react';
 import { useState, useEffect } from "react";
 import { Link, redirect } from 'react-router-dom';
 import { useAuth } from '@/lib/AuthContext.tsx';
 import CircularIndeterminate from '@/components/LoadingIcon.tsx';
 import { deleteTravelItem, getTravelList } from '@/api/travel.api.ts';
+import TravelPlanCard from '@/components/TravelPlanCard.tsx';
 
 // export const BASE_URL = "https://project-tvimk.run.goorm.site";
 // const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -44,7 +41,7 @@ const NoPlanCard: React.FC = () => {
 };
 
 const Travel: React.FC = () => {
-  const { authenticated, authLoading } = useAuth();
+  const { authenticated } = useAuth();
   const [trips, setTrips] = useState<TripPlan[]>([]);
   const [isFetching, setIsFetching] = useState(true); // 데이터 로딩 해결
   
@@ -55,7 +52,6 @@ const Travel: React.FC = () => {
         try {
           const res = await getTravelList();
           setTrips(res); // 응답 데이터 구조에 따라 수정
-          console.log(res);
         } catch (error) {
           console.error('오류 발생:', error);
           alert(`오류 발생: ${ error }`);
@@ -68,7 +64,7 @@ const Travel: React.FC = () => {
     }
   }, [ authenticated ]);
   
-  if (authLoading || isFetching) {
+  if (isFetching) {
     return <CircularIndeterminate />;
   }
   
@@ -112,7 +108,6 @@ const Travel: React.FC = () => {
             <TravelPlanCard
               key={plan.id}
               plan={plan}
-              // onEdit={handleEdit}
               onDelete={handleDeleteByDB}
             />
           ))

@@ -1,9 +1,7 @@
-import { ISchedule } from "../type";
 import SingleSchedule from "./SingleSchedule";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import dayjs from "dayjs";
-import React from "react";
 import { useState } from "react";
 import { styled } from "styled-components";
 import "dayjs/locale/ko";

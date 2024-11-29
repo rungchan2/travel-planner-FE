@@ -1,4 +1,3 @@
-import {requestHandler} from "@/api/http";
 import { requestHandlerFB } from '@/api/fb_http.ts';
 
 export interface LoginPayload {

@@ -1,18 +1,18 @@
 import "./App.css";
 import NavBar from "./components/NavBar";
 import {BrowserRouter} from "react-router-dom";
-import AuthProvider from '@/lib/AuthProvider'; // 수정된 경로
+import AuthProvider from '@/lib/AuthProvider';
 import AppRoutes from "@/routes/AppRoutes.tsx";
 
 function App() {
-
+  
   return (
-      <AuthProvider >
-        <BrowserRouter future={{v7_startTransition: true}}>
+    <AuthProvider>
+      <BrowserRouter future={ { v7_startTransition: true } }>
           <NavBar />
-          <AppRoutes/>
+        <AppRoutes />
         </BrowserRouter>
-      </AuthProvider>
+    </AuthProvider>
   );
 }
 
